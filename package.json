@@ -1,0 +1,41 @@
+{
+  "name": "pstack-pi",
+  "version": "0.1.0",
+  "description": "A Pi-native port of pstack's rigorous engineering skills and workflows.",
+  "license": "MIT",
+  "author": "Lauren Tan",
+  "contributors": [
+    "Dev Bullard"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DBULL7/pstack-pi.git"
+  },
+  "homepage": "https://github.com/DBULL7/pstack-pi",
+  "keywords": [
+    "pi-package",
+    "agent-skills",
+    "pstack",
+    "engineering-workflows"
+  ],
+  "files": [
+    "agents",
+    "docs",
+    "extensions",
+    "scripts",
+    "skills",
+    "LICENSE",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*"
+  },
+  "pi": {
+    "extensions": [
+      "./extensions/aliases.ts"
+    ],
+    "skills": [
+      "./skills"
+    ]
+  }
+}
