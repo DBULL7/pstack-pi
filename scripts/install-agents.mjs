@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const force = process.argv.includes("--force");
 const scriptDirectory = dirname(fileURLToPath(import.meta.url));
 const sourceDirectory = join(scriptDirectory, "..", "agents");
-const configDirectory = process.env.PI_CODING_AGENT_DIR ?? join(homedir(), ".pi", "agent");
+const configDirectory = process.env.PI_CODING_AGENT_DIR || join(homedir(), ".pi", "agent");
 const targetDirectory = join(configDirectory, "agents");
 
 await mkdir(targetDirectory, { recursive: true });

@@ -9,10 +9,10 @@ Install the bundled agents, inspect available Pi models, and optionally pin rout
 
 ## 1. Install bundled agents
 
-Resolve paths relative to this skill directory and run:
+Resolve this `SKILL.md` to an absolute path. Its package root is two directories above the skill directory. Run the installer by absolute path so the user's current working directory does not affect it:
 
 ```bash
-node ../../scripts/install-agents.mjs
+node <package-root>/scripts/install-agents.mjs
 ```
 
 The script installs:
@@ -23,7 +23,7 @@ The script installs:
 It keeps existing files unchanged. If the user explicitly asks to replace existing pstack agent definitions with the package versions, rerun with `--force` after showing the exact target paths:
 
 ```bash
-node ../../scripts/install-agents.mjs --force
+node <package-root>/scripts/install-agents.mjs --force
 ```
 
 Never replace unrelated agents.

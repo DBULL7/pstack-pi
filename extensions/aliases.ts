@@ -12,6 +12,7 @@ const aliases = [
   "how",
   "interrogate",
   "maintain-verification-skill",
+  "make-bot-ui",
   "no-comments",
   "poteto-mode",
   "recall",
