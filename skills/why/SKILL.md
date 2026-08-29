@@ -97,7 +97,7 @@ Capture this as seed context (file paths, symbols, commits, PR numbers, linked t
 
 ### Discovery
 
-Before spawning investigators, list the available MCPs from the Cursor environment. Use the available-tools map when present. Otherwise inspect the `mcps/` directory Cursor exposes for enabled MCP servers.
+Before spawning investigators, discover available MCP tools through Pi's `mcp` gateway. Use tool search and descriptions to identify enabled servers and their capabilities. Do not inspect arbitrary configuration files when the gateway can report live availability.
 
 Map each available MCP to one evidence category:
 
@@ -113,12 +113,9 @@ Source control is always available through git and `gh`. For the other six, clas
 
 Aim for a complete **coverage map**, not a minimal one. A null result from an issue tracker is evidence the decision was not ticketed, a useful fact in itself. Document the null, don't skip the search.
 
-Launch all matching investigators in a single message so they run concurrently. One investigator per category lets each specialize in one tool's query vocabulary and result shape. Don't ask one agent to cover multiple MCPs.
+Use one Pi `subagent` call with parallel tasks so matching investigators run concurrently. One investigator per category lets each specialize in one tool's query vocabulary and result shape. Do not ask one agent to cover multiple MCPs.
 
-Subagent config (each):
-- `subagent_type`: `generalPurpose`
-- `model`: your configured why-investigators model (default `grok-4.6-fast-xhigh`)
-- `readonly`: `false` (agent mode). **Do not use readonly/Ask mode.** It strips MCP access, which disables MCP-backed investigators entirely. The source control investigator would be safe in readonly, but keep modes uniform. Investigators still shouldn't write anything. That's a posture, not a sandbox.
+Choose a named Pi investigator, scout, or worker agent whose declared tools include the evidence source it needs. Agent profiles own model and tool selection. Do not pass Cursor `model`, `readonly`, or `subagent_type` fields. Every investigator prompt forbids file writes and external mutations. When the available agent cannot access MCP tools, keep MCP investigation in the parent and delegate only repository inspection.
 
 Each investigator gets:
 1. The base prompt from `references/investigator-prompt.md`
@@ -160,11 +157,7 @@ If your scope assessment suggests a single-commit trivial target where the PR de
 
 ## Step 4. Synthesize
 
-Spawn one synthesizer subagent:
-
-- `subagent_type`: `generalPurpose`
-- `model`: your configured why-synthesizer model (default `claude-fable-5-thinking-max`)
-- `readonly`: `false` (agent mode). The synthesizer's quality check spot-verifies citations, which can require MCP access. Readonly/Ask mode strips MCPs and defeats that.
+Use Pi's `subagent` tool with one configured planner or reviewer agent as synthesizer. Prefer a different model family from the investigators when available. If that agent cannot access MCP tools, the parent spot-verifies MCP citations before presenting the synthesis.
 
 The synthesizer gets:
 1. The investigator findings, including any null results and any categories skipped with justification
