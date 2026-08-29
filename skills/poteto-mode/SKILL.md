@@ -25,7 +25,7 @@ Remaining triggers:
 - Before review → the **no-comments** skill (`/no-comments`).
 - Shipping UI / IDE / CLI → use the best configured real-surface driver. Browser work can use a browser MCP; CLI and TUI work can use a PTY-aware harness; native work can use its simulator tooling. Optional `cursor-team-kit` control skills may satisfy this when installed, but never assume they exist. For bug fixes, reproduce first on the same surface yourself; hand to the user only under the narrow Bug fix step 1 exception.
 - Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`). That includes "babysit this", "get it green", "address the bugbot comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before checking status; the playbook's step 1 owns the request-to-mode mapping. Do not poll while a Pi background task has a pending completion notification.
-- Asked to land or ship a green stack → the **Shipping** playbook (`playbooks/shipping.md`). Green is not safe. Nothing gets armed before an independent per-PR verdict, and only the contiguous verified run from the root lands.
+- Asked to land or ship a green stack → upstream's **Shipping** playbook is deferred in pstack-pi. Green is not safe. Use **figure-it-out** to design a bounded verification and landing workflow, and obtain explicit authorization before arming or merging anything.
 - Bugbot or the agentic security review commented → skeptical posture. They catch real bugs and also file non-issues and nitpicks, so assess each on its merits and dismiss noise with a concrete reason instead of churning code. Triage fix / dismiss / ask per `references/bugbot-triage.md`.
 - Broken skill mid-task → fix it in its own PR. Don't block. Don't silently work around it.
 - Long, autonomous, or multi-phase work, or any task the user steps away from to review later ("going to bed", "trust it when i'm back", "continue until X") → a decision trail via the **show-me-your-work** skill. Use Pi background tasks only when their completion notification or another concrete wake event fits the work. Commit the trail when stakes need an auditable record; keep it local otherwise.
@@ -128,13 +128,13 @@ A large or cross-cutting effort (a migration across many call sites, an ambitiou
 - **Authoring or modifying a skill.** Writing or editing a SKILL.md. `playbooks/authoring-a-skill.md`.
 - **Eval.** Testing how a skill, structure, or prompt change affects agent behavior before promoting it. `playbooks/eval.md`.
 - **Babysit.** Driving a PR or a stack to merge-ready: conflicts, review threads, CI. `playbooks/babysit.md`.
-- **Shipping.** The half after Babysit. Independently verifying a green stack, then landing the contiguous verified run with Graphite merge-when-ready. `playbooks/shipping.md`.
+- **Shipping.** Deferred in pstack-pi because the upstream workflow assumes Cursor cloud agents, `/loop`, and Graphite merge-when-ready. Use **figure-it-out** for a bounded repository-specific workflow.
 - **Autonomous run.** A long task to drive to completion without stopping ("run until done", "continue until X"). `playbooks/autonomous-run.md`. Adapt its wake mechanism to Pi background task notifications.
 - **Orchestrate.** Deferred in pstack-pi because the upstream workflow assumes Cursor cloud agents. Read `../../docs/pi-compat.md`; use **figure-it-out** for a bounded Pi-native workflow instead.
 - **Autopilot-full.** Deferred in pstack-pi because the upstream workflow assumes Cursor cloud agents and autonomous external PR actions.
 - **Autopilot-stack.** Deferred in pstack-pi because the upstream workflow assumes Cursor cloud agents and Graphite topology automation.
 - **Session pickup.** Resuming or taking over a prior agent's in-flight work from a transcript, cloud-agent URL, or pushed branch. `playbooks/session-pickup.md`.
 - **Pause safely.** Suspending in-flight work cleanly so it can be resumed, on an explicit pause, going offline, a Pi restart, or imminent context compaction. The complement to Session pickup. Full steps: `playbooks/pause-safely.md`.
-- **Multi-phase or multi-PR plan.** Work that spans phases or stacked PRs. `playbooks/multi-phase-plan.md`.
+- **Multi-phase or multi-PR plan.** Deferred in pstack-pi because the upstream template assumes Cursor cloud agents, `/loop`, and `cursor-team-kit` control skills. Use **figure-it-out** to produce a Pi-native plan.
 - **Worktree and simulator cleanup.** Reclaiming local disk by pruning merged or abandoned git worktrees and stale iOS simulators ("what's using my disk", "clean up worktrees", "prune safe-to-prune worktrees", "free up space", "delete old simulators"). `playbooks/worktree-cleanup.md`.
 - **Opening a PR.** Invoked at the end of every other playbook. `playbooks/opening-a-pr.md`.
