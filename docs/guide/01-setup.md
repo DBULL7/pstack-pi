@@ -1,18 +1,16 @@
-# Set up pstack
+# Set up pstack-pi
 
-In this page you install the plugin, pick which models pstack uses, and run your first task. Setup is one command plus a short conversation.
+Install the package, install its named Pi agents, and run a first task.
 
-## Install the plugin
+## Install the package
 
-In a Cursor chat, run:
-
-```text
-/add-plugin pstack
+```bash
+pi install git:github.com/DBULL7/pstack-pi
 ```
 
-Cursor confirms the plugin is installed.
+Restart Pi so the package extension and skills load.
 
-## Pick your models
+## Install the bundled agents
 
 Run:
 
@@ -20,30 +18,32 @@ Run:
 /setup-pstack
 ```
 
-[`/setup-pstack`](../../skills/setup-pstack/SKILL.md) detects the models you have access to, shows you each role (code delegates, judgment, the review panels), and asks what you want. Answer the questions. It writes `~/.cursor/rules/pstack-models.mdc`, a small rule every pstack skill reads.
+The setup skill installs `poteto-agent` and `comment-sicko` under `~/.pi/agent/agents/`. Existing files are preserved. The profiles inherit the parent session's active model unless you explicitly pin a valid model from `pi --list-models`.
 
-You only override what you care about. A role with no line in the rule keeps the skill's default. To restore a default later, delete that role's line, or just run `/setup-pstack` again.
+Pi discovers agent-file changes on each subagent invocation. Use `/reload` after editing package skills or extensions.
 
-You might be wondering what happens if you use Auto. Set a role to `inherit-parent` or `auto` and pstack omits the subagent `model` field, so the subagent inherits your parent chat model. Both values mean the same thing, and neither is a model slug. For a panel role the value is a list, and one subagent runs per entry, so the list length sets the panel size. Setup also configures `swarm workers`, the default model for every `/swarm` worker unless a race names a model for each arm.
+## Optional verification skill
 
-## Accept the verification offer, or don't
+If the project has no way to drive its real user surface, run:
 
-At the end of setup, `/setup-pstack` looks for a way to prove app behavior in your project, either a `verify-*` skill or an existing harness. If it finds neither, it offers once to generate one with [`/create-verification-skill`](../../skills/create-verification-skill/SKILL.md).
+```text
+/create-verification-skill
+```
 
-Say yes and it writes `.cursor/skills/verify-<app>/`, a project-local skill that teaches agents to drive your app the way a user does. It proves the skill works once before handing it over. Say no and setup moves on. You can run `/create-verification-skill` yourself any time. [Verify and ship](./06-verify-and-ship.md#create-a-project-verification-skill) covers when it earns its place.
-
-After setup, start a new chat. The model rule applies to new sessions.
+The generator writes `.pi/skills/verify-<app>/`, including launch, doctor, drive, evidence, cleanup, and feature-map instructions. It proves one mapped feature before handing the skill over.
 
 ## Run your first task
 
-Pick something real but small, and describe it the way you'd describe it to a colleague:
+Pick something real but small:
 
 ```text
-/poteto-mode add a --json flag to this command. text output stays byte-identical. verify both.
+/poteto-mode add a --json flag to this command. Keep text output byte-identical. Verify both.
 ```
 
-Watch the todo list. The first item is always "read the Principles section". The rest are the matched playbook's steps copied in, the Feature playbook for this prompt. If `/poteto-mode` skips a step, the step stays in the list with `skip: <reason>`, so you can see what it chose not to do.
+`/poteto-mode` is a package command alias. Pi's canonical form is also available:
 
-From here you can type normal follow-ups. `/poteto-mode` is sticky. It stays on for the conversation until you opt out by saying so.
+```text
+/skill:poteto-mode add a --json flag to this command
+```
 
 Next: [Route work through `/poteto-mode`](./02-poteto-mode.md).
