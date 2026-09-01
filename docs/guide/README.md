@@ -1,10 +1,10 @@
 # The pstack guide
 
-pstack works best when you stop micromanaging the agent. You describe what you want and how you'll know it's done. `/poteto-mode` picks the playbook, runs the other skills as the steps need them, and shows you the evidence. This guide teaches that habit with realistic prompts.
+pstack works best when you describe the outcome and how you'll know it's done. `/poteto-mode` picks the playbook, runs the other skills as needed, and shows you the evidence. This guide teaches that habit with realistic prompts.
 
 Here's what you'll learn:
 
-1. [Set up pstack](./01-setup.md). Install the plugin and pick your models.
+1. [Set up pstack](./01-setup.md). Install the package and named-agent runtime, then verify both.
 2. [Route work through `/poteto-mode`](./02-poteto-mode.md). Give it a goal and watch it pick a playbook.
 3. [Understand the code](./03-understand.md). `/how`, `/why`, `/teach`, and `/recall` before you edit anything.
 4. [Design the change](./04-design.md). `/architect`, `/arena`, `/swarm`, and `/interrogate` before code locks in a shape.
@@ -17,7 +17,7 @@ Here's what you'll learn:
 
 Read the pages in order the first time. After that, each page stands alone.
 
-## If you only remember one thing
+## Give pstack a goal and a check
 
 Give the agent a goal and a way to check it, in your own words:
 

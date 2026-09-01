@@ -1,99 +1,108 @@
 # pstack-pi
 
-A Pi-native port of [Lauren Tan's pstack](https://github.com/cursor/plugins/tree/main/pstack). pstack is a set of rigorous engineering skills built around a simple idea: go deep first, write less code, and prove the result against the real artifact.
+A [Pi](https://pi.dev) package that routes engineering tasks through explicit design, implementation, and verification playbooks. It ports [Lauren Tan's pstack](https://github.com/cursor/plugins/tree/main/pstack) while preserving the original subtree history and MIT license.
 
-This repository preserves pstack's subtree history and MIT license. Lauren Tan is the original author. The Pi packaging, runtime adapters, and safety changes are maintained in this fork.
+Describe the outcome and how to prove it. `/poteto-mode` selects a playbook, applies the relevant engineering principles, and keeps the verification evidence visible.
 
-## Status
+## Quick start
 
-The principles and core skills load in Pi today. Cursor-specific orchestration is being ported incrementally. Read [Pi compatibility](docs/pi-compat.md) before using autonomous, cloud-agent, shipping, or Graphite playbooks.
-
-## Install
-
-Install globally so the skills and command aliases are available in every project:
+Install [Pi](https://pi.dev) and sign in to a model provider. Then install the named-agent runtime and pstack-pi globally:
 
 ```bash
+pi install npm:pi-subagents
 pi install git:github.com/DBULL7/pstack-pi
 ```
 
-Restart Pi, then install the bundled subagent profiles:
-
-```text
-/setup-pstack
-```
-
-The setup is idempotent and does not replace existing agent files unless you explicitly request it.
-
-To try a local checkout while developing:
-
-```bash
-git clone https://github.com/DBULL7/pstack-pi.git ~/Projects/pstack-pi
-pi install ~/Projects/pstack-pi
-```
-
-Use `/reload` after editing skills or extensions.
-
-## Start here
-
-Run poteto-mode for non-trivial engineering work:
+Restart Pi in the project you want to work on. Start with a real, bounded task:
 
 ```text
 /poteto-mode add a --json flag to this command. Keep text output byte-identical. Verify both.
 ```
 
-Pi's canonical skill command also works:
+`/poteto-mode` chooses the workflow from the goal and finish condition. You do not need to name the underlying skills.
+
+Run `/setup-pstack` to check the named-agent runtime, bundled profiles, and model routes.
+
+## Learn the workflow
+
+Read [the pstack guide](docs/guide/README.md) for a task-based tour from understanding code through verification and shipping.
+
+Use a focused command when you want one part of the workflow:
+
+- `/how` traces how a subsystem works
+- `/why` finds the evidence behind a design decision
+- `/architect` settles types and boundaries before implementation
+- `/interrogate` reviews a result adversarially
+- `/tdd` reproduces a bug with a focused failing test
+
+Pi's canonical skill syntax also works:
 
 ```text
 /skill:poteto-mode investigate why this process spins while idle
 ```
 
-Useful focused commands include:
+## What gets installed
 
-```text
-/how explain the request path through this subsystem
-/why find the evidence for this design decision
-/architect settle the types and module boundaries first
-/interrogate review this diff adversarially
-/arena produce competing designs and synthesize the strongest
-/swarm inspect every package in parallel
-/no-comments review this diff's comments and suppressions
-/tdd reproduce this regression with a cheap local test first
+pstack-pi adds:
+
+- Engineering skills, playbooks, and 21 named principles
+- Slash-command aliases such as `/poteto-mode` and `/interrogate`
+- `poteto-agent` and read-only `comment-sicko` profiles for `pi-subagents`
+- Pi-specific session, delegation, Model Context Protocol (MCP), and safety guidance
+
+The agent profiles load from the package. pstack-pi does not copy or replace files under `~/.pi/agent/agents/`.
+
+## Optional capabilities
+
+Install these only for workflows that need them:
+
+```bash
+# Durable background commands and unattended runs
+pi install npm:pi-background-tasks
+
+# MCP tools for issue trackers, docs, chat, and observability
+pi install npm:pi-mcp-adapter
 ```
 
-## Pi integration
+Restart Pi after installing an extension. See [Pi compatibility](docs/pi-compat.md) for supported, optional, and deferred workflows.
 
-pstack-pi includes:
+## Develop from a local checkout
 
-- 45 upstream skills and playbooks.
-- 21 focused engineering principles.
-- Pi slash-command aliases such as `/poteto-mode` and `/interrogate`.
-- `poteto-agent` and read-only `comment-sicko` Pi agent definitions.
-- An idempotent agent installer invoked by `/setup-pstack`.
-- A bundled `/create-skill` replacement for Cursor's built-in authoring workflow.
-- Pi session, delegation, MCP, and safety guidance.
+Clone the repository wherever you keep source checkouts:
 
-Pi's canonical `/skill:<name>` syntax remains available for every skill, including skills without short aliases.
+```bash
+git clone https://github.com/DBULL7/pstack-pi.git
+cd pstack-pi
+pi -e .
+```
 
-## Differences from upstream
+The `-e` flag loads the checkout for that Pi session without adding it to your package settings. Use `/reload` after editing skills, agent profiles, or extensions.
 
-- Cursor `Task` fan-out maps to Pi's named `subagent` agents.
-- Model routing lives in Pi agent frontmatter rather than per-call Cursor model slugs.
-- Active transcripts come from `$PI_SESSION_FILE`; prior sessions live under `~/.pi/agent/sessions/`.
-- Cursor's `/loop`, cloud-agent environments, and Benny automations do not have direct Pi equivalents.
-- `cursor-team-kit` helpers are optional and are never assumed to exist.
-- External actions require explicit authorization, even when they are technically reversible.
+## Update or remove
 
-See [docs/pi-compat.md](docs/pi-compat.md) for the complete mapping and deferred workflows.
+Update the package with:
+
+```bash
+pi update git:github.com/DBULL7/pstack-pi
+```
+
+Remove it with:
+
+```bash
+pi remove git:github.com/DBULL7/pstack-pi
+```
+
+`pi-subagents`, `pi-background-tasks`, and `pi-mcp-adapter` remain installed because other packages may use them.
+
+## Compatibility
+
+The principles and core skills run in Pi today. Some retained upstream workflows still depend on Cursor cloud agents, Graphite, or optional `cursor-team-kit` helpers. pstack-pi does not route into those workflows silently.
+
+Read [Pi compatibility](docs/pi-compat.md) before using autonomous, cloud-agent, shipping, or Graphite playbooks.
 
 ## Updating from upstream
 
-This repository was extracted from the `pstack/` subtree of `cursor/plugins`, so its inherited commits retain upstream history. Port upstream changes in a temporary clone or worktree, then reapply the Pi compatibility layer and verify the package before merging.
-
-Upstream source:
-
-```text
-https://github.com/cursor/plugins/tree/main/pstack
-```
+This repository was extracted from the `pstack/` subtree of `cursor/plugins`, so inherited commits retain upstream history. Port upstream changes in a temporary clone or worktree, then reapply the Pi compatibility layer and verify the package before merging.
 
 ## License
 

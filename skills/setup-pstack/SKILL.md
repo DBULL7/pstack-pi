@@ -1,72 +1,58 @@
 ---
 name: setup-pstack
-description: "Install pstack-pi's bundled Pi agent profiles and optionally pin their models. Use for /setup-pstack, configuring pstack model routes, or repairing the agent installation."
+description: "Check pstack-pi's named-agent runtime, bundled profiles, and model routes. Use for /setup-pstack, setup diagnostics, or repairing a pstack-pi installation."
 ---
 
-# Set up pstack-pi
+# Check pstack-pi setup
 
-Install the bundled agents, inspect available Pi models, and optionally pin routes. Do not overwrite an existing agent definition without explicit approval.
+Verify the named-agent runtime, inspect pstack-pi's package profiles, and run a read-only smoke test. Do not copy package profiles into user or project agent directories.
 
-## 1. Install bundled agents
+## 1. Check the runtime
 
-Resolve this `SKILL.md` to an absolute path. Its package root is two directories above the skill directory. Run the installer by absolute path so the user's current working directory does not affect it:
-
-```bash
-node <package-root>/scripts/install-agents.mjs
-```
-
-The script installs:
-
-- `~/.pi/agent/agents/poteto-agent.md`. Full-capability pstack worker.
-- `~/.pi/agent/agents/comment-sicko.md`. Read-only comment reviewer.
-
-It keeps existing files unchanged. If the user explicitly asks to replace existing pstack agent definitions with the package versions, rerun with `--force` after showing the exact target paths:
+Confirm that a `subagent` tool with management actions is available. pstack-pi uses the `pi-subagents` package:
 
 ```bash
-node <package-root>/scripts/install-agents.mjs --force
+pi install npm:pi-subagents
 ```
 
-Never replace unrelated agents.
+If the tool is missing, report the install command and ask the user to restart Pi. Do not claim that delegated workflows are available.
 
-## 2. Inspect model routes
+When the tool exists, run its `doctor` action and report any blocking runtime issue.
 
-Run:
+## 2. Check the package profiles
 
-```bash
-pi --list-models
-```
+Use the `subagent` tool's `get` action to inspect:
 
-Read the installed agent frontmatter. A missing `model` field means the agent inherits the parent Pi session's active model and reasoning level.
+- `poteto-agent`
+- `comment-sicko`
 
-Show the current route for each bundled agent. Mark a pinned model that no longer appears in `pi --list-models` as invalid.
+Both profiles should report pstack-pi as their package source. Package profiles update with pstack-pi and must not be copied or ejected into `~/.pi/agent/agents/` or `.pi/agents/` during setup.
 
-## 3. Offer model pinning
+A user or project profile with the same name shadows the package profile. Report its exact path and whether it appears to be an intentional customization or a legacy copy from the old installer. Preserve it unless the user explicitly chooses to restore the package profile. Before resetting an override, read the installed `pi-subagents` agents guide and use its current supported workflow.
 
-Ask whether to keep parent-model inheritance or pin either agent to an available `provider/model-id` from the inspected list.
+Confirm that `comment-sicko` has no mutation-capable tools. Treat a shadowing profile with `bash`, `write`, `edit`, or another mutation tool as not read-only.
 
-- Prefer inheritance unless the user has a clear routing policy.
-- Never invent or guess a model ID.
-- For `comment-sicko`, prefer a capable review model over a fast mechanical model.
-- Preserve every existing frontmatter field when changing `model`.
+If either profile is missing, confirm that pstack-pi is installed, then ask the user to update pstack-pi and restart Pi. Do not create a substitute profile silently.
 
-Apply only the choices the user confirms. Removing the `model` line restores inheritance.
+## 3. Inspect model routes
 
-## 4. Verify
+Use the runtime's `models` and `get` actions. A profile without a model override inherits the parent Pi session's active model and reasoning level.
 
-Confirm both files exist and have valid lowercase kebab-case names. Then use Pi's `subagent` tool for a harmless read-only smoke test:
+Report the effective route for both profiles. Mark an unavailable override as invalid.
 
-- Agent: `comment-sicko`.
-- Task: inspect one small source file or empty diff and return a report without changing anything.
+If the user asks to change a model route, read the installed `pi-subagents` models guide through its `guide` action and follow the current override workflow. Never edit a bundled package profile.
 
-Do not fabricate success if the `subagent` extension is unavailable. In that case, report that pstack-pi's skills still load but delegation workflows require Pi's subagent extension or an equivalent named-agent tool.
+## 4. Run a smoke test
+
+Run `comment-sicko` in the foreground on one small source file or an empty diff. Explicitly tell it not to change files. Report the actual result.
+
+Do not fabricate success when the runtime, profile, model, or child run is unavailable.
 
 ## 5. Report
 
 Return:
 
-- Installed and preserved agent paths.
-- Whether each agent inherits or pins a model.
-- Smoke-test result.
-- Any missing dependency.
-
-Agent definitions are discovered fresh on each subagent invocation. Skill and extension edits require `/reload`; a first package install normally requires restarting Pi.
+- Runtime status
+- Profile source and effective model route
+- Smoke-test result
+- Exact repair command for any failed check

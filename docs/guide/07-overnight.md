@@ -2,6 +2,8 @@
 
 An unattended run needs a checkable finish condition, isolated work, durable evidence, and a real wake mechanism. Time spent is not a finish condition.
 
+This workflow requires `pi-background-tasks`. Install it with `pi install npm:pi-background-tasks`, then restart Pi.
+
 ## State the predicate
 
 Use something the agent can prove true or false:

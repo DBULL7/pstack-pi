@@ -1,6 +1,6 @@
 # Pi compatibility
 
-pstack-pi keeps pstack's engineering principles and playbooks while replacing Cursor-specific runtime concepts with Pi equivalents.
+pstack-pi keeps pstack's engineering principles and playbooks while replacing Cursor-specific runtime concepts with Pi equivalents. It uses [pi-subagents](https://github.com/nicobailon/pi-subagents) for named agents and parallel workflows.
 
 ## Runtime mapping
 
@@ -15,7 +15,7 @@ pstack-pi keeps pstack's engineering principles and playbooks while replacing Cu
 | Cursor `/loop` | A Pi background task with durable completion notification; do not poll merely to wait |
 | Cursor `AskQuestion` | Ask a concise question in chat after exhausting observable answers |
 | Cursor todo tool | State and maintain a concise checklist in the conversation |
-| Cursor MCP directory | Discover MCP tools with Pi's `mcp` or `mcpScript` tools |
+| Cursor Model Context Protocol (MCP) directory | Discover MCP tools with Pi's `mcp` or `mcpScript` tools |
 | `.cursor/skills/` | Project `.pi/skills/` or `.agents/skills/` |
 | `~/.cursor/skills/` | `~/.pi/agent/skills/` or `~/.agents/skills/` |
 | Cursor agent transcripts | `$PI_SESSION_FILE` and `~/.pi/agent/sessions/` |
@@ -23,15 +23,23 @@ pstack-pi keeps pstack's engineering principles and playbooks while replacing Cu
 
 ## Delegation
 
-Pi's subagent extension selects models through agent definitions, not individual tool calls. Agent files live in `~/.pi/agent/agents/` or trusted project `.pi/agents/` directories.
+`pi-subagents` selects models through agent definitions, not individual tool calls. pstack-pi exposes its bundled profiles through the package manifest. Settings-based model overrides keep those profiles package-managed.
 
-Run `/setup-pstack` after installation. It installs the bundled `poteto-agent` and `comment-sicko` definitions without replacing existing files. Edit their `model` frontmatter when you want fixed routes. Omit `model` to inherit the parent session's model and reasoning level.
+A user profile in `~/.pi/agent/agents/` or project profile in `.pi/agents/` with the same name shadows the package version. `/setup-pstack` reports these overrides instead of replacing them.
+
+Run `/setup-pstack` to verify the runtime, profiles, and model routes. Do not copy or edit the bundled profiles. Use `pi-subagents` model overrides when you want fixed routes; without an override, both profiles inherit the parent session's model and reasoning level.
 
 Use one parallel `subagent` call when a pstack workflow asks for several independent candidates. Give every writing agent a separate worktree or output directory.
 
+## Optional runtimes
+
+The unattended workflows use `bg_run` and `bg_delegate` from [pi-background-tasks](https://github.com/ismailsaleekh/pi-background-tasks). Install it with `pi install npm:pi-background-tasks`.
+
+Cross-system evidence searches use `mcp` and `mcpScript` from [pi-mcp-adapter](https://github.com/nicobailon/pi-mcp-adapter). Install it with `pi install npm:pi-mcp-adapter`, then configure only the Model Context Protocol (MCP) servers you trust.
+
 ## Sessions
 
-Pi stores sessions as JSONL under:
+Pi stores sessions as JSON Lines (JSONL) under:
 
 ```text
 ~/.pi/agent/sessions/--<working-directory>--/<timestamp>_<uuid>.jsonl
