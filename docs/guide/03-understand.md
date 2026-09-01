@@ -26,7 +26,9 @@ The explanation comes first, so the critique stays grounded in how the thing rea
 /why was the retry limit set to five? does the reason still hold?
 ```
 
-[`/why`](../../skills/why/SKILL.md) works like a detective on a cold case. It starts from source control, then queries whatever evidence categories your MCPs expose, such as the issue tracker, long-form docs, team chat, observability, error tracking, and analytics, all in parallel. The report cites everything, separates direct evidence from inference, and says "appears to" when the record is thin. A null result gets reported too, because "nobody wrote down why" is itself an answer.
+[`/why`](../../skills/why/SKILL.md) starts from source control. It then searches the evidence categories exposed through your Model Context Protocol (MCP) tools, such as issue trackers, documents, team chat, observability, error tracking, and analytics. The report cites its sources, separates evidence from inference, and includes searches that returned nothing.
+
+Repository history works without an MCP adapter. To search connected systems, install `pi-mcp-adapter` and configure the servers you trust.
 
 The two compose naturally. `do why first then how` is a perfectly good prompt when you suspect the history explains the mess.
 

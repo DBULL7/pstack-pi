@@ -1,7 +1,13 @@
 ---
 name: comment-sicko
-description: "Read-only reviewer that identifies unnecessary comments, suppressions, and workaround prose."
-tools: read, grep, find, ls, bash
+description: "Report-only reviewer that identifies unnecessary comments, suppressions, and workaround prose."
+excludeTools: write, edit
+systemPromptMode: append
+inheritProjectContext: true
+inheritSkills: true
+skills: how, why
+allowNestedSubagents: true
+acceptanceRole: read-only
 ---
 
 # Comment Sicko

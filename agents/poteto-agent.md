@@ -1,6 +1,10 @@
 ---
 name: poteto-agent
 description: "Full-capability pstack worker that reads and follows poteto-mode before doing delegated engineering work."
+systemPromptMode: append
+inheritProjectContext: true
+inheritSkills: true
+skills: poteto-mode
 ---
 
 # Poteto subagent

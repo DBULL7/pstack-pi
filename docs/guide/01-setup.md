@@ -1,16 +1,23 @@
 # Set up pstack-pi
 
-Install the package, install its named Pi agents, and run a first task.
+Install pstack-pi and its named-agent runtime, verify the profiles, and run a first task.
 
-## Install the package
+## Before you start
+
+Install [Pi](https://pi.dev) and sign in to a model provider. Run the following commands from any directory.
+
+## Install the runtime and package
 
 ```bash
+pi install npm:pi-subagents
 pi install git:github.com/DBULL7/pstack-pi
 ```
 
-Restart Pi so the package extension and skills load.
+`pi-subagents` provides named agents and parallel workflows. pstack-pi provides the skills, command aliases, and agent profiles.
 
-## Install the bundled agents
+Restart Pi so both extensions load.
+
+## Check the setup
 
 Run:
 
@@ -18,23 +25,29 @@ Run:
 /setup-pstack
 ```
 
-The setup skill installs `poteto-agent` and `comment-sicko` under `~/.pi/agent/agents/`. Existing files are preserved. The profiles inherit the parent session's active model unless you explicitly pin a valid model from `pi --list-models`.
+The setup check runs runtime diagnostics and confirms that both package profiles are visible. It reports their model routes and runs a report-only smoke test. The profiles inherit your active Pi model unless you configure an override.
 
-Pi discovers agent-file changes on each subagent invocation. Use `/reload` after editing package skills or extensions.
+pstack-pi loads its profiles from the package. It does not copy or replace files under `~/.pi/agent/agents/`.
 
-## Optional verification skill
+## Add optional capabilities
 
-If the project has no way to drive its real user surface, run:
+Install background-task support for unattended workflows:
 
-```text
-/create-verification-skill
+```bash
+pi install npm:pi-background-tasks
 ```
 
-The generator writes `.pi/skills/verify-<app>/`, including launch, doctor, drive, evidence, cleanup, and feature-map instructions. It proves one mapped feature before handing the skill over.
+Install the Model Context Protocol (MCP) adapter when `/why` should search connected issue trackers, documents, chat, or observability tools:
+
+```bash
+pi install npm:pi-mcp-adapter
+```
+
+Restart Pi after installing either extension.
 
 ## Run your first task
 
-Pick something real but small:
+Pick something real but small, and state how to verify it:
 
 ```text
 /poteto-mode add a --json flag to this command. Keep text output byte-identical. Verify both.
