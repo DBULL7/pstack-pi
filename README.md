@@ -47,7 +47,7 @@ pstack-pi adds:
 
 - Engineering skills, playbooks, and 21 named principles
 - Slash-command aliases such as `/poteto-mode` and `/interrogate`
-- `poteto-agent` and read-only `comment-sicko` profiles for `pi-subagents`
+- `poteto-agent` and report-only `comment-sicko` profiles for `pi-subagents`
 - Pi-specific session, delegation, Model Context Protocol (MCP), and safety guidance
 
 The agent profiles load from the package. pstack-pi does not copy or replace files under `~/.pi/agent/agents/`.

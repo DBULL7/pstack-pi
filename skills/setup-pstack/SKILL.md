@@ -5,7 +5,7 @@ description: "Check pstack-pi's named-agent runtime, bundled profiles, and model
 
 # Check pstack-pi setup
 
-Verify the named-agent runtime, inspect pstack-pi's package profiles, and run a read-only smoke test. Do not copy package profiles into user or project agent directories.
+Verify the named-agent runtime, inspect pstack-pi's package profiles, and run a report-only smoke test. Do not copy package profiles into user or project agent directories.
 
 ## 1. Check the runtime
 
@@ -30,7 +30,7 @@ Both profiles should report pstack-pi as their package source. Package profiles 
 
 A user or project profile with the same name shadows the package profile. Report its exact path and whether it appears to be an intentional customization or a legacy copy from the old installer. Preserve it unless the user explicitly chooses to restore the package profile. Before resetting an override, read the installed `pi-subagents` agents guide and use its current supported workflow.
 
-Confirm that `comment-sicko` has no mutation-capable tools. Treat a shadowing profile with `bash`, `write`, `edit`, or another mutation tool as not read-only.
+Confirm that `comment-sicko` excludes the direct `write` and `edit` tools. It should inherit shell, Model Context Protocol (MCP), and nested-agent capabilities so the `how` and `why` skills can gather evidence. Its prompt must still forbid file changes and external mutations. Treat a shadowing profile with `write` or `edit` as an unsafe mismatch.
 
 If either profile is missing, confirm that pstack-pi is installed, then ask the user to update pstack-pi and restart Pi. Do not create a substitute profile silently.
 

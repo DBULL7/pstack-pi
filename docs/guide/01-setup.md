@@ -25,7 +25,7 @@ Run:
 /setup-pstack
 ```
 
-The setup check runs runtime diagnostics and confirms that both package profiles are visible. It reports their model routes and runs a read-only smoke test. The profiles inherit your active Pi model unless you configure an override.
+The setup check runs runtime diagnostics and confirms that both package profiles are visible. It reports their model routes and runs a report-only smoke test. The profiles inherit your active Pi model unless you configure an override.
 
 pstack-pi loads its profiles from the package. It does not copy or replace files under `~/.pi/agent/agents/`.
 
