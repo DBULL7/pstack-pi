@@ -23,11 +23,13 @@ pstack-pi keeps pstack's engineering principles and playbooks while replacing Cu
 
 ## Delegation
 
-`pi-subagents` selects models through agent definitions, not individual tool calls. pstack-pi exposes its bundled profiles through the package manifest. Settings-based model overrides keep those profiles package-managed.
+`pi-subagents` selects models through agent definitions, not individual tool calls. pstack-pi declares its bundled profiles in `pi.subagents.agents`. Pi core does not load agent resources from that key. `pi-subagents` 0.29.0 or later reads the key from raw package manifests and registers the profiles.
 
-A user profile in `~/.pi/agent/agents/` or project profile in `.pi/agents/` with the same name shadows the package version. `/setup-pstack` reports these overrides instead of replacing them.
+Package source is the expected state for `poteto-agent` and `comment-sicko`. A user profile in `~/.pi/agent/agents/` or a project profile in `.pi/agents/` is an override that shadows the package profile. `/setup-pstack` reports these overrides instead of replacing them. Never copy or symlink the package agents into either directory.
 
-Run `/setup-pstack` to verify the runtime, profiles, and model routes. Do not copy or edit the bundled profiles. Use `pi-subagents` model overrides when you want fixed routes; without an override, both profiles inherit the parent session's model and reasoning level.
+If either package profile is missing on a `pi-subagents` version before 0.29.0, run `pi update npm:pi-subagents`, restart Pi, and retry. On version 0.29.0 or later, inspect the pstack-pi package installation and the `pi-subagents` package discovery settings.
+
+Run `/setup-pstack` to verify the runtime, profiles, and model routes. Do not edit the bundled profiles. Use `pi-subagents` model overrides when you want fixed routes. Without an override, both profiles inherit the parent session's model and reasoning level.
 
 Use one parallel `subagent` call when a pstack workflow asks for several independent candidates. Give every writing agent a separate worktree or output directory.
 

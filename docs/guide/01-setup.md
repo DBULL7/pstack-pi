@@ -13,9 +13,9 @@ pi install npm:pi-subagents
 pi install git:github.com/DBULL7/pstack-pi
 ```
 
-`pi-subagents` provides named agents and parallel workflows. pstack-pi provides the skills, command aliases, and agent profiles.
+`pi-subagents` provides named agents and parallel workflows. Use version 0.29.0 or later so it can discover pstack-pi's package profiles.
 
-Restart Pi so both extensions load.
+Pi core does not load agent resources from `pi.subagents.agents`. `pi-subagents` reads that key from pstack-pi's raw package manifest. Restart Pi so both extensions load.
 
 ## Check the setup
 
@@ -27,7 +27,15 @@ Run:
 
 The setup check runs runtime diagnostics and confirms that both package profiles are visible. It reports their model routes and runs a report-only smoke test. The profiles inherit your active Pi model unless you configure an override.
 
-pstack-pi loads its profiles from the package. It does not copy or replace files under `~/.pi/agent/agents/`.
+Both profiles must report `source=package`. A user or project profile is an override and shadows the package profile. Never copy or symlink pstack-pi's agents into `~/.pi/agent/agents/` or `.pi/agents/`.
+
+If either profile is missing on a `pi-subagents` version before 0.29.0, update the runtime:
+
+```bash
+pi update npm:pi-subagents
+```
+
+Restart Pi, then run `/setup-pstack` again. If a profile is missing on version 0.29.0 or later, inspect the pstack-pi package installation and the `pi-subagents` package discovery settings. Do not create a user profile as a workaround.
 
 ## Add optional capabilities
 

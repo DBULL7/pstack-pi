@@ -5,19 +5,19 @@ description: "Check pstack-pi's named-agent runtime, bundled profiles, and model
 
 # Check pstack-pi setup
 
-Verify the named-agent runtime, inspect pstack-pi's package profiles, and run a report-only smoke test. Do not copy package profiles into user or project agent directories.
+Verify the named-agent runtime, inspect pstack-pi's package profiles, and run a report-only smoke test.
 
 ## 1. Check the runtime
 
-Confirm that a `subagent` tool with management actions is available. pstack-pi uses the `pi-subagents` package:
+Confirm that a `subagent` tool with management actions is available. pstack-pi requires `pi-subagents` 0.29.0 or later for package profile discovery. Pi core does not load agent resources from `pi.subagents.agents`. `pi-subagents` reads that key from raw package manifests.
+
+If the tool is missing, report this install command and ask the user to restart Pi:
 
 ```bash
 pi install npm:pi-subagents
 ```
 
-If the tool is missing, report the install command and ask the user to restart Pi. Do not claim that delegated workflows are available.
-
-When the tool exists, run its `doctor` action and report any blocking runtime issue.
+Do not claim that delegated workflows are available. When the tool exists, run its `doctor` action. Report the installed runtime version and any blocking issue.
 
 ## 2. Check the package profiles
 
@@ -26,13 +26,19 @@ Use the `subagent` tool's `get` action to inspect:
 - `poteto-agent`
 - `comment-sicko`
 
-Both profiles should report pstack-pi as their package source. Package profiles update with pstack-pi and must not be copied or ejected into `~/.pi/agent/agents/` or `.pi/agents/` during setup.
+Both profiles must report `source=package` for pstack-pi. Never copy, eject, or symlink these profiles into `~/.pi/agent/agents/` or `.pi/agents/`.
 
-A user or project profile with the same name shadows the package profile. Report its exact path and whether it appears to be an intentional customization or a legacy copy from the old installer. Preserve it unless the user explicitly chooses to restore the package profile. Before resetting an override, read the installed `pi-subagents` agents guide and use its current supported workflow.
+A user or project profile with the same name is an override that shadows the package profile. Report its exact path and whether it appears to be an intentional customization or a legacy copy from the old installer. Preserve it unless the user explicitly chooses to restore the package profile. Before resetting an override, read the installed `pi-subagents` agents guide and use its current supported workflow.
 
 Confirm that `comment-sicko` excludes the direct `write` and `edit` tools. It should inherit shell, Model Context Protocol (MCP), and nested-agent capabilities so the `how` and `why` skills can gather evidence. Its prompt must still forbid file changes and external mutations. Treat a shadowing profile with `write` or `edit` as an unsafe mismatch.
 
-If either profile is missing, confirm that pstack-pi is installed, then ask the user to update pstack-pi and restart Pi. Do not create a substitute profile silently.
+If either profile is missing, confirm that pstack-pi is installed and that its raw `package.json` declares `pi.subagents.agents`. Then check the `pi-subagents` version. For a version before 0.29.0, report this repair, ask the user to restart Pi, and retry the profile checks:
+
+```bash
+pi update npm:pi-subagents
+```
+
+For version 0.29.0 or later, read the installed `pi-subagents` agents guide through its `guide` action. Check the `doctor` package-source counts, the pstack-pi entry from `pi list`, and the installed package root. Report the broken discovery step instead of creating a substitute profile. Do not infer agent support from Pi core's resource list because `pi-subagents` reads raw package manifests itself.
 
 ## 3. Inspect model routes
 
