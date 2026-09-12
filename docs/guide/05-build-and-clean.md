@@ -44,7 +44,7 @@ In context, that's enough. [`/tdd`](../../skills/tdd/SKILL.md) writes the smalle
 
 ## Apply the TypeScript rules
 
-Invoke [`/typescript-best-practices`](../../skills/typescript-best-practices/SKILL.md) when working with `.ts` or `.tsx` files. It covers discriminated unions, `unknown` at boundaries, exhaustive variants, and schema-derived types. Like upstream, this skill now disables automatic model invocation. Load it explicitly or through a workflow reference.
+Invoke [`/skill:typescript-best-practices`](../../skills/typescript-best-practices/SKILL.md) when working with `.ts` or `.tsx` files. It covers discriminated unions, `unknown` at boundaries, exhaustive variants, and schema-derived types. Like upstream, this skill now disables automatic model invocation. Load it explicitly or through a workflow reference.
 
 ## Clean before you commit
 

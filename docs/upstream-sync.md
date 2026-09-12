@@ -17,9 +17,9 @@ The resulting package has 48 skills, including 23 principles, and 23 playbook fi
 
 ## Adaptations and exclusions
 
-- Added Attack the Premise and Test Behavior, Not Implementation, with links from the principle index and guide.
+- Added Attack the Premise and Test Behavior, Not Implementation, with links from the principle index and guide. Adapted the testing principle to evaluate concrete regressions instead of rejecting matcher names or treating an `undefined` mutation as a universal quality gate.
 - Applied upstream density edits, evidence labeling, schema-derived TypeScript guidance, and the shorter `why` workflow. `how` now explains only. Its two critic reference files and the guide's old mode example were removed together.
-- Added `disable-model-invocation: true` to `how`, `why`, `make-bot-ui`, `typescript-best-practices`, and `unslop`. These remain available through explicit skill commands and workflow references. Kept kebab-case names and double-quoted descriptions. Did not import Cursor's TypeScript `paths` frontmatter.
+- Added `disable-model-invocation: true` to `how`, `why`, `make-bot-ui`, `typescript-best-practices`, and `unslop`. These remain available through explicit skill commands and workflow references. The TypeScript guide uses Pi's built-in `/skill:typescript-best-practices` command. Kept kebab-case names and double-quoted descriptions. Did not import Cursor's TypeScript `paths` frontmatter.
 - Kept Pi named-agent routing, package-managed profiles, MCP fallback handling, scoped session paths, explicit authorization, bundled `create-skill`, relative skill links, and background completion without agent polling. No Cursor model pins or `Task` configuration were imported. `swarm` stays unchanged because its upstream delta only replaces model routing and trims the output-path instruction.
 - Adapted active PR guidance to resolve GitHub or Origin once and use base-branch stacks without requiring Graphite. Kept user-requested drafts, separate writable worktrees, and authorization before external mutations. The GitHub watcher remains GitHub-only. Origin commands require local CLI verification before use.
 - Left `shipping`, `orchestrate`, `autopilot-full`, `autopilot-stack`, and `multi-phase-plan` byte-identical to the Pi baseline. Their newer upstream forge changes do not make their cloud-agent and autonomous landing assumptions Pi-compatible. Active routing still defers them to a bounded `figure-it-out` workflow. The verification/shipping and overnight guide pages retain their Pi boundaries.
@@ -37,7 +37,7 @@ node scripts/verify-upstream-sync.mjs
 git diff --check
 ```
 
-The dependency-free static check validates skill names, quoted descriptions, relative Markdown link targets, conflict markers, removed references, new principle links, invocation flags, selected Pi safety contracts, counts, and protected files against `77a1a7b`. It ignores fenced and inline code examples and the exact existing `[PR #123](url)` template placeholder in `why/references/synthesizer-prompt.md`. It checks target files, not heading fragments or remote URLs. Static prose checks do not prove model compliance.
+The dependency-free static check validates skill names, quoted descriptions, relative Markdown link targets, conflict markers, removed references, new principle links, invocation flags, selected Pi safety contracts, counts, and protected files against `77a1a7b`. It ignores fenced and inline code examples. Template placeholders use code formatting, so the link validator needs no file-specific exceptions. It checks target files, not heading fragments or remote URLs. Static prose checks do not prove model compliance.
 
 The protected-file comparison is pinned to this sync. For a future sync, review and update that baseline and its protected paths together.
 
@@ -65,5 +65,9 @@ On the tested Pi `0.85.1`, runtime creation loads resources before the model-lis
 ## Verification limits
 
 The pre-sync loader found 46 skills and 21 principles with zero diagnostics and zero extensions. The post-sync loader found 48 skills and 23 principles under the same isolation, again with zero diagnostics and zero extensions. Negative fixtures confirmed that the static verifier rejects unquoted descriptions, invalid names, missing links, merge markers, and a restored Critique Mode section.
+
+The review follow-up verified that the TypeScript command from the guide expands through Pi's command handler, includes the skill body, and preserves its arguments. Bun examples confirmed that empty-result assertions reject both `undefined` and unexpected items, while an absence test can catch a wrong fallback even if it passes an `undefined` mutation. A sixth negative fixture confirmed that a bare template link is rejected after removing the validator's file-specific exception.
+
+A thermo-nuclear code-quality review of the full diff found no remaining maintainability blockers after these corrections. No changed file crosses 1,000 lines. The largest changed file is the 313-line TypeScript reference; the verifier is 104 lines and adds no runtime dependencies or helper modules.
 
 No provider inference, live PR operations, installs, or end-to-end Origin checks are part of this sync. Tests for the unchanged watcher runtime were outside scope. Its CLI was not invoked because the launcher can install dependencies. Existing Cursor-specific assumptions in retained runtime helpers and deferred workflows are not repaired by this prose sync.

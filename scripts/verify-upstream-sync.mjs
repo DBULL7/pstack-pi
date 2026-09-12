@@ -26,7 +26,6 @@ for (const [file, text] of records) {
   for (const match of prose.matchAll(/\[[^\]\n]*\]\(([^\s)]+)(?:\s+"[^"]*")?\)/g)) {
     const target = match[1].split("#")[0];
     if (!target || /^(?:[a-z]+:|\/)/i.test(target)) continue;
-    if (file === "skills/why/references/synthesizer-prompt.md" && match[0] === "[PR #123](url)") continue;
     if (!existsSync(resolve(root, dirname(file), decodeURIComponent(target)))) errors.push(`${file}: missing link ${target}`);
   }
 }
