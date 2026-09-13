@@ -8,27 +8,27 @@ disable-model-invocation: true
 
 ## Non-negotiables
 
-**Start every multi-step task with a concise checklist whose first item is to read the Principles section below in full.** Use a configured todo tool when one exists; otherwise keep the checklist in the conversation. The principles ground every trigger here. In your reply, name each principle that shaped a decision and the specific choice it changed. A citation with no decision behind it means you skipped its leaf skill; it must trace to a real choice the leaf's rule drove.
+The Principles section below grounds every trigger. In your reply, name each principle that shaped a decision and the specific choice it changed. Cite only principles whose leaf SKILL.md you read this session.
 
 Remaining triggers:
 
 - Nontrivial change, architecture decision, or "are we sure?" → the [**how**](../how/SKILL.md) skill.
-- About to ask the user a "which approach", "how should I", or "what should this do" question → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Sketch it via the Prototype playbook (`playbooks/prototype.md`) and let the result decide. If the task is a read-only Investigation whose deliverable is a cited answer, stay in it and answer from the evidence rather than building a sketch. Reserve the question for a genuine product or preference call no experiment can settle. The ask is the slow path. A throwaway probe usually answers faster, and it hands the human a result to react to instead of a decision to make.
+- About to ask the user a "which approach", "how should I", or "what should this do" question → classify it before you ask. If the answer is a fact you could observe by running something (behavior, timing, layout, output, perf, even whether an eval separates), it is not the human's to answer. Sketch it via the Prototype playbook (`playbooks/prototype.md`) and let the result decide. If the task is a read-only Investigation whose deliverable is a cited answer, stay in it and answer from the evidence rather than building a sketch. Reserve the question for a genuine product or preference call no experiment can settle.
 - Any code → name the data shape first, and choose its organizing structure per [**principle-model-the-domain**](../principle-model-the-domain/SKILL.md).
 - Code crossing a function boundary → the [**architect**](../architect/SKILL.md) skill, parallel design exploration before implementing.
 - Parallel fan-out → the [**swarm**](../swarm/SKILL.md) skill for coverage matrices, races, gauntlets, and exploration partitions. Use [**arena**](../arena/SKILL.md) for design or code bakeoffs with base selection and grafting.
 - Contested design → the [**interrogate**](../interrogate/SKILL.md) skill (multi-model adversarial) before shipping.
 - Nontrivial multi-step → write the throughput checkpoint (Feature step 3).
-- Any prose surface → the [**unslop**](../unslop/SKILL.md) skill. Your reply is a prose surface; write it per **Writing the reply**. Agent-facing prose also follows pstack-pi's bundled [**create-skill**](../create-skill/SKILL.md) skill.
+- Any prose surface → the [**unslop**](../unslop/SKILL.md) skill. Your reply is a prose surface. Write it per **Writing the reply**. Agent-facing prose also follows pstack-pi's bundled [**create-skill**](../create-skill/SKILL.md) skill.
 - Docs, RFCs, readmes, PR descriptions, or commit messages → the [**technical-writing**](../technical-writing/SKILL.md) skill (`/technical-writing`).
 - Before commit → use a configured code-cleanup skill when available. `deslop` from `cursor-team-kit` is optional and must not be assumed.
 - Before review → the [**no-comments**](../no-comments/SKILL.md) skill (`/no-comments`).
-- Shipping UI / IDE / CLI → use the best configured real-surface driver. Browser work can use a browser MCP; CLI and TUI work can use a PTY-aware harness; native work can use its simulator tooling. Optional `cursor-team-kit` control skills may satisfy this when installed, but never assume they exist. For bug fixes, reproduce first on the same surface yourself; hand to the user only under the narrow Bug fix step 1 exception.
-- Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`). That includes "babysit this", "get it green", "address the bugbot comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before checking status; the playbook's step 1 owns the request-to-mode mapping. Do not poll while a Pi background task has a pending completion notification.
+- Shipping UI / IDE / CLI → use the best configured real-surface driver. Browser work can use a browser MCP; CLI and TUI work can use a PTY-aware harness; native work can use its simulator tooling. Optional `cursor-team-kit` control skills may satisfy this when installed, but never assume they exist. For bug fixes, reproduce first on the same surface yourself. Hand to the user only under the narrow Bug fix step 1 exception.
+- Any PR-status request → the **Babysit** playbook (`playbooks/babysit.md`). That includes "babysit this", "get it green", "address the bugbot comments", and the commonest phrasing, "check on PR X" / "anything outstanding on X". Never triggered by merely opening a PR. Declare its mode before checking status. The playbook's step 1 owns the request-to-mode mapping. Do not poll while a Pi background task has a pending completion notification.
 - Asked to land or ship a green stack → upstream's **Shipping** playbook is deferred in pstack-pi. Green is not safe. Use [**figure-it-out**](../figure-it-out/SKILL.md) to design a bounded verification and landing workflow, and obtain explicit authorization before arming or merging anything.
 - Bugbot or the agentic security review commented → skeptical posture. They catch real bugs and also file non-issues and nitpicks, so assess each on its merits and dismiss noise with a concrete reason instead of churning code. Triage fix / dismiss / ask per `references/bugbot-triage.md`.
 - Broken skill mid-task → fix it in its own PR. Don't block. Don't silently work around it.
-- Long, autonomous, or multi-phase work, or any task the user steps away from to review later ("going to bed", "trust it when i'm back", "continue until X") → a decision trail via the [**show-me-your-work**](../show-me-your-work/SKILL.md) skill. Use Pi background tasks only when their completion notification or another concrete wake event fits the work. Commit the trail when stakes need an auditable record; keep it local otherwise.
+- Long, autonomous, or multi-phase work, or any task the user steps away from to review later ("going to bed", "trust it when i'm back", "continue until X") → a decision trail via the [**show-me-your-work**](../show-me-your-work/SKILL.md) skill. Use Pi background tasks only when their completion notification or another concrete wake event fits the work. Commit the trail when stakes need an auditable record. Keep it local otherwise.
 
 ## Principles
 
@@ -39,12 +39,13 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 - **Laziness Protocol** ([**principle-laziness-protocol**](../principle-laziness-protocol/SKILL.md)). Refactoring, sizing a diff, or tempted to add abstractions, layers, or signal threading. Bias to deletion and the smallest change that solves the problem.
 - **Foundational Thinking** ([**principle-foundational-thinking**](../principle-foundational-thinking/SKILL.md)). Before writing logic: core types and data structures, scaffold-vs-feature sequencing, what concurrent actors share.
 - **Redesign from First Principles** ([**principle-redesign-from-first-principles**](../principle-redesign-from-first-principles/SKILL.md)). Integrating a new requirement into an existing design. Redesign as if it had been foundational from day one.
+- **Attack the Premise** ([**principle-attack-the-premise**](../principle-attack-the-premise/SKILL.md)). Two or more fixes that share one premise have failed the same gate. Take a census of which actors hold the imbalance before the next fix, then question the premise instead of writing another fix that assumes it.
 - **Subtract Before You Add** ([**principle-subtract-before-you-add**](../principle-subtract-before-you-add/SKILL.md)). Sequencing an addition, refactor, or rewrite. Remove dead weight first, then build on the simpler base.
 - **Minimize Reader Load** ([**principle-minimize-reader-load**](../principle-minimize-reader-load/SKILL.md)). Reviewing or shaping code that's hard to trace. Count layers and hidden state, collapse one-caller wrappers, shrink mutable scope.
 - **Outcome-Oriented Execution** ([**principle-outcome-oriented-execution**](../principle-outcome-oriented-execution/SKILL.md)). Planned rewrites and migrations with explicit phase boundaries. Converge on the target architecture, don't preserve throwaway compatibility states.
 - **Experience First** ([**principle-experience-first**](../principle-experience-first/SKILL.md)). Product, UX, or feature-scope tradeoffs. Choose user delight over implementation convenience.
 - **Exhaust the Design Space** ([**principle-exhaust-the-design-space**](../principle-exhaust-the-design-space/SKILL.md)). A novel interaction or architectural decision with no precedent. Build 2-3 competing prototypes and compare before committing.
-- **Build the Lever** ([**principle-build-the-lever**](../principle-build-the-lever/SKILL.md)). Any non-trivial work. Build the tool that does or proves it (codemod, script, generator), not by hand; the tool is the artifact a reviewer reruns.
+- **Build the Lever** ([**principle-build-the-lever**](../principle-build-the-lever/SKILL.md)). Any non-trivial work. Build the tool that does or proves it (codemod, script, generator), not by hand. The tool is the artifact a reviewer reruns.
 
 **Architecture**
 
@@ -60,6 +61,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 - **Prove It Works** ([**principle-prove-it-works**](../principle-prove-it-works/SKILL.md)). After a task, before declaring done. Verify against the real artifact, not a proxy or "it compiles".
 - **Fix Root Causes** ([**principle-fix-root-causes**](../principle-fix-root-causes/SKILL.md)). Debugging. Trace each symptom to its root cause, reproduce first, ask why until you reach it.
 - **Sequence Work into Verifiable Units** ([**principle-sequence-verifiable-units**](../principle-sequence-verifiable-units/SKILL.md)). Multi-step work (sweeps, migrations, runs of similar edits) and how you stack commits and PRs. Break work into small units that each end in a check, verify each before the next, and order delivery so the sequence proves itself.
+- **Test Behavior, Not Implementation** ([**principle-test-behavior-not-implementation**](../principle-test-behavior-not-implementation/SKILL.md)). Writing, changing, or keeping a test. Assert observable results or effects against independent expectations. Judge coverage by the regression the test catches, not its matcher names.
 
 **Delegation**
 
@@ -84,7 +86,7 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 Read `../../docs/pi-compat.md` before the first delegated playbook step in a session.
 
-Use Pi's `subagent` tool with `agent: "poteto-agent"` for code-writing delegates and ad-hoc helpers inside a playbook step. Routed workflow skills such as `how`, `why`, `interrogate`, `reflect`, and `swarm` may choose read-only or diverse reviewer agents; respect those choices.
+Use Pi's `subagent` tool with `agent: "poteto-agent"` for code-writing delegates and ad-hoc helpers inside a playbook step. Routed workflow skills such as `how`, `why`, `interrogate`, `reflect`, and `swarm` may choose read-only or diverse reviewer agents. Respect those choices.
 
 Issue independent delegates in one `subagent` call with `tasks: [...]`. Give every writing delegate a distinct worktree, branch, or output directory. Named Pi agent profiles own their model and tool configuration. Do not pass Cursor fields such as `subagent_type`, `model`, `readonly`, `environment`, or `run_in_background` to Pi's subagent tool.
 
@@ -94,24 +96,25 @@ You own every delegate's work. Review the diff and write your own summary rather
 
 ## Writing the reply
 
-Write the reply clean as you draft it. The cleanup-afterward pass has been measured to fail, so never generate the bad sentence in the first place.
+Write the reply clean as you draft it. A cleanup pass after drafting does not remove these patterns.
 
 - **Short declarative sentences.** One thought per sentence, ended with a period.
-- **The long-dash character is banned outright.** Two cases. A file-list bullet joining a filename to its description with a dash. Write it as a sentence ("`main.js` owns persistence and the IPC handlers"). A bold section header joined to its text by a dash. Write the header as its own sentence ("**Verification.** End to end via CDP").
+- **No long-dash character anywhere.** Write a file-list bullet as a sentence ("`main.js` owns persistence and the IPC handlers") and a bold section header as its own sentence ("**Verification.** End to end via CDP").
 - **A colon as a mid-sentence connector is also out** (unslop rule 14). A colon before a list is fine.
 - **Terse is not an excuse to drop content.** Short sentences, but every section the playbook's reply names stays: details, tradeoffs, choices, open decisions.
 - **Frame impact for the consumer and the maintainer.** Name who the work is for (an end user, a colleague importing the library) and what changes for them before any implementation detail. Then what the next engineer who owns this code inherits. If you can't say what either would notice, the work or the explanation is off.
 - **Never fabricate a link, citation, or transcript reference.** Link only artifacts you produced or read this session.
+- **Every claim carries its evidence or its label in the same sentence.** Measured, inferred, or guess. A prediction or an unseen cause is a guess. Never hand the human a check you could run.
 
 Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. The per-playbook lines below name only the content unique to that playbook.
 
 ## Comments
 
-Comments follow the same rule as the reply. Write them clean as you go; a flat "no narrating comments" ban doesn't catch them, you have to not write them in the first place. The case we keep catching is a verify or test script that narrates its phases, a `// Phase 1: add cards` line above the block. Delete it; the assertion or log string is the only doc you need. Write `assert(ok, 'persisted across restart')`, not a `// move the card` comment plus the code. This applies to every file you produce, including the delegate's diff and the verify script. Keep a comment only for a non-obvious *why* the code can't show.
+Comments follow the same rule as the reply. Write them clean as you go. Keep a comment only for a non-obvious *why* the code can't show. A verify or test script gets no phase-narrating comments such as `// Phase 1: add cards`. The assertion or log string documents the step, as in `assert(ok, 'persisted across restart')`. This applies to every file you produce, including the delegate's diff.
 
 ## Playbooks
 
-Your first checklist actions are the matched playbook's steps, copied in verbatim, before any task-specific items and before you reason about the task. The failure mode is reading a playbook then writing a bespoke plan that drops its named steps (`architect`, the throughput checkpoint). A step you choose not to do stays in the checklist with a one-line `skip: <reason>`; skipping silently is not allowed. Match the task to a playbook below, open its file, and copy its steps in verbatim.
+Open a concise checklist whose first items are the matched playbook's steps, copied in verbatim, before any task-specific items. Use a configured todo tool when one exists; otherwise keep the checklist in the conversation. A step you choose not to do stays in the list with a one-line `skip: <reason>`. Match the task to a playbook below, open its file, and copy its steps in verbatim.
 
 A large or cross-cutting effort (a migration across many call sites, an ambitious multi-part change), or work the user steps away from to trust later, routes to the [**figure-it-out**](../figure-it-out/SKILL.md) skill even when a narrower playbook like Feature fits. Use [**figure-it-out**](../figure-it-out/SKILL.md) whenever no bundled playbook fits. It designs a bespoke, rigorous Pi-native playbook for the task. Upstream's standing project-scale **Orchestrate** workflow is deferred until its Cursor cloud-agent assumptions are replaced.
 

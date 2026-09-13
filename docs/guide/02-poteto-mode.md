@@ -1,6 +1,6 @@
 # Route work through `/poteto-mode`
 
-`/poteto-mode` is the front door. You give it a goal, it matches one of twenty-two playbooks, copies that playbook's steps into the todo list, and calls the other skills as the steps need them. In this page you learn what a good prompt looks like, and how little of one you actually need.
+`/poteto-mode` is the front door. You give it a goal, it selects a supported playbook, copies that playbook's steps into the checklist, and calls the other skills as needed. The package retains 23 playbook files. Five are deferred upstream references, leaving 18 active playbooks. See [Pi compatibility](../pi-compat.md) for the exclusions. This page shows what a good prompt looks like.
 
 ![A dispatcher pulls a switch lever to route robots on rail handcars toward lit gates, under a /poteto-mode departure board listing BUG FIX, FEATURE, and INVESTIGATION.](./images/router.jpg)
 

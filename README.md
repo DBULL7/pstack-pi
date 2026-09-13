@@ -45,7 +45,7 @@ Pi's canonical skill syntax also works:
 
 pstack-pi adds:
 
-- Engineering skills, playbooks, and 21 named principles
+- Engineering skills, playbooks, and 23 named principles
 - Slash-command aliases such as `/poteto-mode` and `/interrogate`
 - `poteto-agent` and report-only `comment-sicko` profiles for `pi-subagents`
 - Pi-specific session, delegation, Model Context Protocol (MCP), and safety guidance
@@ -103,6 +103,8 @@ Read [Pi compatibility](docs/pi-compat.md) before using autonomous, cloud-agent,
 ## Updating from upstream
 
 This repository was extracted from the `pstack/` subtree of `cursor/plugins`, so inherited commits retain upstream history. Port upstream changes in a temporary clone or worktree, then reapply the Pi compatibility layer and verify the package before merging.
+
+See [Upstream sync](docs/upstream-sync.md) for the pinned source, Pi adaptations, exclusions, and verification commands.
 
 ## License
 
