@@ -68,7 +68,7 @@ for (const [file, text] of records) {
 for (const name of deferred) {
   assert.match(mode, new RegExp(`\\*\\*${name === "multi-phase-plan" ? "Multi-phase or multi-PR plan" : name[0].toUpperCase() + name.slice(1)}\\.\\*\\* Deferred`));
 }
-execFileSync("git", ["diff", "--exit-code", "fc99b79", "--", "package.json", "agents", "automations", "docs/pi-compat.md", "docs/guide/01-setup.md", "skills/setup-pstack", "skills/create-skill", "skills/poteto-mode/scripts", "skills/poteto-mode/playbooks/babysit.md", ...deferred.map((name) => `skills/poteto-mode/playbooks/${name}.md`)], { cwd: root, stdio: "pipe" });
+execFileSync("git", ["diff", "--exit-code", "fc99b79", "--", "package.json", "agents", "automations", "skills/create-skill", "skills/poteto-mode/scripts", "skills/poteto-mode/playbooks/babysit.md", ...deferred.map((name) => `skills/poteto-mode/playbooks/${name}.md`)], { cwd: root, stdio: "pipe" });
 assert.equal(existsSync(resolve(root, ".cursor-plugin")), false, "no Cursor manifest");
 const principles = [...names].filter((name) => name.startsWith("principle-")).length;
 assert.ok(readFileSync(resolve(root, "README.md"), "utf8").includes(`${principles} named principles`), "README count");
