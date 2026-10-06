@@ -49,6 +49,8 @@ git diff --check
 
 The static verifier checks skill names and descriptions, relative Markdown file links, conflict markers, the principle index, invocation flags, selected Pi contracts, counts, and protected files against `fc99b79`. It ignores fenced and inline code examples. It checks target files, not heading fragments or remote URLs. Review the protected paths and baseline together before the next sync.
 
+Setup guidance in `skills/setup-pstack/SKILL.md`, `docs/guide/01-setup.md`, and `docs/pi-compat.md` uses the normal skill and Markdown checks rather than the frozen-file comparison. This allows setup repairs after the sync; package metadata and agent profiles remain protected. Validate changes to runtime discovery guidance with isolated `pi-subagents` package-discovery fixtures as well as the Pi loader. Static checks and skill loading do not establish that the guidance is correct.
+
 For an isolated native Pi load, set `PI_SDK_PATH` to an existing installation's `dist/index.js` when Node cannot resolve the peer package:
 
 ```bash

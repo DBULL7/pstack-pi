@@ -23,11 +23,13 @@ pstack-pi keeps pstack's engineering principles and playbooks while replacing Cu
 
 ## Delegation
 
-`pi-subagents` selects models through agent definitions, not individual tool calls. pstack-pi declares its bundled profiles in `pi.subagents.agents`. Pi core does not load agent resources from that key. `pi-subagents` 0.29.0 or later reads the key from raw package manifests and registers the profiles.
+`pi-subagents` selects models through agent definitions, not individual tool calls. pstack-pi requires version 0.62.0 or later for its bundled profiles. Version 0.29.0 introduced package discovery, but 0.62.0 added the per-agent `excludeTools` setting required by `comment-sicko`.
+
+pstack-pi declares its bundled profiles in `pi.subagents.agents`. Pi core does not load agent resources from that key. `pi-subagents` reads the key from raw package manifests and registers the profiles.
 
 Package source is the expected state for `poteto-agent` and `comment-sicko`. A user profile in `~/.pi/agent/agents/` or a project profile in `.pi/agents/` is an override that shadows the package profile. `/setup-pstack` reports these overrides instead of replacing them. Never copy or symlink the package agents into either directory.
 
-If either package profile is missing on a `pi-subagents` version before 0.29.0, run `pi update npm:pi-subagents`, restart Pi, and retry. On version 0.29.0 or later, inspect the pstack-pi package installation and the `pi-subagents` package discovery settings.
+On a `pi-subagents` version before 0.62.0, run `pi update npm:pi-subagents`, restart Pi, and retry, even if both profiles are visible. If a profile is missing on version 0.62.0 or later, inspect the pstack-pi package installation and the `pi-subagents` package discovery settings. `/setup-pstack` checks the effective tool exclusions before running its smoke test.
 
 Run `/setup-pstack` to verify the runtime, profiles, and model routes. Do not edit the bundled profiles. Use `pi-subagents` model overrides when you want fixed routes. Without an override, both profiles inherit the parent session's model and reasoning level.
 
