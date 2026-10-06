@@ -57,12 +57,12 @@ PI_CODING_AGENT_DIR="$(mktemp -d)" PI_OFFLINE=1 \
   node scripts/verify-upstream-sync.mjs --load
 ```
 
-This uses in-memory settings and disables ambient resource discovery. It loads only this checkout's skills and aliases extension. It asserts the exact discovered skill set, zero load errors, invocation flags, and registration of all three new commands. Every alias is exercised with empty and multiline quoted arguments and during a busy turn. Pi's skill expansion must include the corresponding installed skill body and preserve the arguments. This check uses the installed SDK's `AgentSession._expandSkillCommand` method; an SDK API change may require updating the harness.
+This uses in-memory settings and disables ambient resource discovery. It loads only this checkout's skills and aliases extension. It asserts the exact discovered skill set, zero load errors, invocation flags, and registration of all three new commands. Each registered alias handler is called with empty and multiline quoted arguments. The check captures the message sent to Pi and verifies the skill command, trimmed arguments, and prompt-expansion option. A simulated busy turn verifies that the handler warns instead of sending a message.
 
 ## Verification results and limits
 
-- Pi `1.0.0`, running under Node.js `24.16.0`, discovers all 52 skills with zero skill diagnostics and one package extension with zero load errors. All 27 aliases forward and expand correctly and refuse to interrupt an active turn. No model session or inference is used.
+- Pi `1.0.0`, running under Node.js `24.16.0`, discovers all 52 skills with zero skill diagnostics and one package extension with zero load errors. All 27 alias handlers forward the expected arguments and warn without sending a message when the simulated session is busy. No model session or inference is used.
 - Decision-log checks cover missing, empty, and existing files, header initialization, preservation of prior rows, one-row appends, UTC timestamps, control-character sanitization, formula-like cells, directory creation, and invalid arguments leaving the file untouched. The same check fails against the pre-sync writer on empty-file initialization.
 - Isolated negative fixtures reject an imported Cursor model rule, a missing new alias, an invocation-flag regression, and a broken reference. Guide and help heading links also resolve.
 
-These checks prove resource loading, command dispatch, and log behavior. They do not prove future model compliance with skill prose. No live PR operations, provider inference, installs, Origin operations, or deferred orchestration runtimes are exercised by this sync.
+These checks cover resource loading, alias argument forwarding and busy-state handling, and log behavior. Full Pi session dispatch, skill expansion, and future model compliance with skill prose remain unverified. No live PR operations, provider inference, installs, Origin operations, or deferred orchestration runtimes are exercised by this sync.

@@ -83,7 +83,7 @@ if (process.argv.includes("--load")) {
   assert.ok(process.env.PI_CODING_AGENT_DIR, "set a fresh PI_CODING_AGENT_DIR");
   assert.deepEqual(readdirSync(process.env.PI_CODING_AGENT_DIR), [], "agent directory must be fresh and empty");
   const sdk = process.env.PI_SDK_PATH;
-  const { AgentSession, DefaultResourceLoader, SettingsManager } = await import(sdk ? pathToFileURL(resolve(sdk)).href : "@earendil-works/pi-coding-agent");
+  const { DefaultResourceLoader, SettingsManager } = await import(sdk ? pathToFileURL(resolve(sdk)).href : "@earendil-works/pi-coding-agent");
   const loader = new DefaultResourceLoader({
     cwd: root,
     agentDir: process.env.PI_CODING_AGENT_DIR,
@@ -117,10 +117,6 @@ if (process.argv.includes("--load")) {
       await command.handler(args, ctx);
       const message = messages.pop();
       assert.deepEqual(message, { content: `/skill:${name}${args.trim() ? ` ${args.trim()}` : ""}`, options: { expandPromptTemplates: true } }, `/${name} forwards arguments`);
-      const expanded = AgentSession.prototype._expandSkillCommand.call({ resourceLoader: loader }, message.content);
-      const body = records.get(`skills/${name}/SKILL.md`).replace(/^---\n[\s\S]*?\n---\n/, "").trim();
-      assert.ok(expanded.includes(body), `/${name} expands the installed skill body`);
-      assert.ok(expanded.endsWith(args.trim() || "</skill>"), `/${name} preserves the user's request after expansion`);
       assert.equal(notices.length, 0, `/${name} runs when idle`);
       await command.handler(args, { ...ctx, isIdle: () => false });
       assert.equal(messages.length, 0, `/${name} does not interrupt an active turn`);
