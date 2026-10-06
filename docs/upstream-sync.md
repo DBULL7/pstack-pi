@@ -1,73 +1,68 @@
-# Upstream sync through 0.15.2
+# Upstream sync through 0.15.15
 
 ## Source and baseline
 
 | Record | Pin |
 |---|---|
-| Source | [cursor/plugins, pstack subtree](https://github.com/cursor/plugins/tree/f5bdd6826fd0a0d9cbc4347134c3a74a200b9d9d/pstack) |
-| Upstream target | `f5bdd6826fd0a0d9cbc4347134c3a74a200b9d9d`, plugin `0.15.2` |
-| Upstream baseline | `6fecddba65801f9b9c08b8b328d998ee5b09d290:pstack` |
-| Original port | `25e2e7a`, tree `950b90234c17babd00c43e32b19ae50abb4720f5` |
-| Pi baseline | `77a1a7b` |
+| Source | [cursor/plugins, pstack subtree](https://github.com/cursor/plugins/tree/df581122cde17e6e27686b5a448bde23e4ad4318/pstack) |
+| Upstream target | `df581122cde17e6e27686b5a448bde23e4ad4318`, plugin `0.15.15` |
+| Upstream baseline | `f5bdd6826fd0a0d9cbc4347134c3a74a200b9d9d`, plugin `0.15.2` |
+| Pi baseline | `fc99b79a22dc19e3a8aecd984db807636379eb70`, the merged [0.15.2 sync](https://github.com/DBULL7/pstack-pi/pull/4) |
+| Original port | `25e2e7a`, tree `950b90234c17babd00c43e32b19ae50abb4720f5`, upstream `6fecddba65801f9b9c08b8b328d998ee5b09d290:pstack` |
 | Pi package version | `0.1.0`, independent of the upstream plugin version |
 
-The original port tree equals the upstream baseline subtree. The upstream delta contains 100 changed paths, including Cursor packaging. Integration used file-keyed records of the old, new, and current-port blobs, followed by `git merge-file` and semantic conflict review.
+The upstream delta has 16 pstack commits and 65 changed paths. Integration compared each old upstream file, new upstream file, and Pi file, then reviewed both merge conflicts and clean merges for runtime assumptions. Of those paths, 48 carry imported or adapted changes, 16 retain the Pi baseline, and the Cursor manifest is excluded.
 
-The resulting package has 48 skills, including 23 principles, and 23 playbook files. Five playbooks remain deferred, leaving 18 active playbooks. The verifier below regenerates these counts.
+The package has 52 skills, including 24 principles, and 27 slash-command aliases. There are 23 playbook files: five deferred and 18 active.
 
-## Adaptations and exclusions
+## Imported changes
 
-- Added Attack the Premise and Test Behavior, Not Implementation, with links from the principle index and guide. Adapted the testing principle to evaluate concrete regressions instead of rejecting matcher names or treating an `undefined` mutation as a universal quality gate.
-- Applied upstream density edits, evidence labeling, schema-derived TypeScript guidance, and the shorter `why` workflow. `how` now explains only. Its two critic reference files and the guide's old mode example were removed together.
-- Added `disable-model-invocation: true` to `how`, `why`, `make-bot-ui`, `typescript-best-practices`, and `unslop`. These remain available through explicit skill commands and workflow references. The TypeScript guide uses Pi's built-in `/skill:typescript-best-practices` command. Kept kebab-case names and double-quoted descriptions. Did not import Cursor's TypeScript `paths` frontmatter.
-- Kept Pi named-agent routing, package-managed profiles, MCP fallback handling, scoped session paths, explicit authorization, bundled `create-skill`, relative skill links, and background completion without agent polling. No Cursor model pins or `Task` configuration were imported. `swarm` stays unchanged because its upstream delta only replaces model routing and trims the output-path instruction.
-- Adapted active PR guidance to resolve GitHub or Origin once and use base-branch stacks without requiring Graphite. Kept user-requested drafts, separate writable worktrees, and authorization before external mutations. The GitHub watcher remains GitHub-only. Origin commands require local CLI verification before use.
-- Left `shipping`, `orchestrate`, `autopilot-full`, `autopilot-stack`, and `multi-phase-plan` byte-identical to the Pi baseline. Their newer upstream forge changes do not make their cloud-agent and autonomous landing assumptions Pi-compatible. Active routing still defers them to a bounded `figure-it-out` workflow. The verification/shipping and overnight guide pages retain their Pi boundaries.
-- Left Pi setup, its guide, package metadata, agent profiles, extensions, automations, and existing runtime scripts unchanged. Excluded `.cursor-plugin/plugin.json` and `assets/logo.png`. Preserved the main README's Pi onboarding; changed only its principle count and sync link.
+- Added `benchmark-checklist`, `correct`, `poteto-help`, and `principle-explain-the-number`. The first three have Pi command aliases; all four preserve upstream's explicit-invocation flag.
+- Connected the benchmark checklist to poteto-mode, Perf issue, and Hillclimb. Imported the ordered performance mantras and the requirement to record error counts, completed work, repeated samples, and the measured limiter. Benchmark setup includes the macOS core-count command.
+- Imported architect's agent-oriented design review: single ownership, one supported path per task, inaccessible internals, and one source for repeated lists.
+- Imported fresh-subagent guidance, exact commit and method reporting for swarm workers, schema-first TypeScript examples, shorter skill prose, and revised PR-body guidance.
+- Imported append-only decision-log audits with per-run boundaries. The log writer adds a header to an empty file and appends even when its file-size check gives a false negative. It preserves the existing TSV and spreadsheet-formula sanitization.
+- Updated the guide with prompting, investigation, prototyping, verification, benchmarking, corrections, and help examples. Added trust checks before unattended work and the Pause safely guidance.
+
+## Pi adaptations and exclusions
+
+- Rewrote `poteto-help` setup, model routing, command syntax, troubleshooting, and reference links for Pi. Help answers do not install packages, mutate configuration, or start the proposed task. Model routes come from named profiles and runtime overrides. An unknown route is not evidence that setup never ran.
+- Kept the prior testing adaptation in `/correct`: evaluate the regression a test catches, including absence, side effects, properties, and types. A mutation that returns nothing is not a universal reason to delete coverage.
+- Kept Pi's named agents, MCP fallback handling, session privacy boundaries, background completion notifications, bundled `create-skill`, explicit external-action authorization, and user-requested drafts. A built-in PR tool is preferred only for the operations it supports, under the same authorization rules.
+- Left `arena`, `how`, `interrogate`, `reflect`, `why`, and Refactoring unchanged where upstream altered Cursor model routing or removed review reminders. No Cursor model identifiers or `pstack-models.mdc` routing were imported.
+- Left `shipping`, `orchestrate`, `autopilot-full`, `autopilot-stack`, and `multi-phase-plan` unchanged. Pi planning and queued work still route to a bounded `figure-it-out` workflow. Kept Babysit unchanged because its upstream change delegates rebase and force-push authority to deferred autopilot owners.
+- Left package metadata, agent profiles, setup and its guide, compatibility docs, automations, and `poteto-mode/scripts` unchanged. Excluded the Cursor manifest, model presets, cloud-agent commands, `/loop`, and custom-mode UI. The aliases extension adds only the three new commands.
 
 See [Pi compatibility](pi-compat.md) for the runtime mapping and authorization policy.
 
 ## Rerunnable checks
 
-Run from the checkout with Node.js 22 or newer and git:
+Run with Node.js 22 or newer, Git, and Bash:
 
 ```bash
 node --check scripts/verify-upstream-sync.mjs
 node scripts/verify-upstream-sync.mjs
+node scripts/verify-decision-log.mjs
+bash -n skills/show-me-your-work/scripts/log.sh
 git diff --check
 ```
 
-The dependency-free static check validates skill names, quoted descriptions, relative Markdown link targets, conflict markers, removed references, new principle links, invocation flags, selected Pi safety contracts, counts, and protected files against `77a1a7b`. It ignores fenced and inline code examples. Template placeholders use code formatting, so the link validator needs no file-specific exceptions. It checks target files, not heading fragments or remote URLs. Static prose checks do not prove model compliance.
+The static verifier checks skill names and descriptions, relative Markdown file links, conflict markers, the principle index, invocation flags, selected Pi contracts, counts, and protected files against `fc99b79`. It ignores fenced and inline code examples. It checks target files, not heading fragments or remote URLs. Review the protected paths and baseline together before the next sync.
 
-The protected-file comparison is pinned to this sync. For a future sync, review and update that baseline and its protected paths together.
-
-For a real isolated Pi load, use an already installed Pi SDK. Set `PI_SDK_PATH` to its `dist/index.js` if Node cannot resolve the peer package. For a global npm installation:
+For an isolated native Pi load, set `PI_SDK_PATH` to an existing installation's `dist/index.js` when Node cannot resolve the peer package:
 
 ```bash
-export PI_SDK_PATH="$(npm root -g)/@earendil-works/pi-coding-agent/dist/index.js"
+export PI_SDK_PATH="/absolute/path/to/pi-coding-agent/dist/index.js"
 PI_CODING_AGENT_DIR="$(mktemp -d)" PI_OFFLINE=1 \
   node scripts/verify-upstream-sync.mjs --load
 ```
 
-This invokes Pi's `DefaultResourceLoader.reload()` with in-memory settings, all ambient resource discovery disabled, and the absolute checkout skills directory as its only added skill path. It asserts the exact discovered name set, zero diagnostics, zero extensions, and the five invocation flags. It creates no model session and performs no inference.
+This uses in-memory settings and disables ambient resource discovery. It loads only this checkout's skills and aliases extension. It asserts the exact discovered skill set, zero load errors, invocation flags, and registration of all three new commands. Every alias is exercised with empty and multiline quoted arguments and during a busy turn. Pi's skill expansion must include the corresponding installed skill body and preserve the arguments. This check uses the installed SDK's `AgentSession._expandSkillCommand` method; an SDK API change may require updating the harness.
 
-The following CLI smoke command is diagnostic only. It does not replace the SDK assertions:
+## Verification results and limits
 
-```bash
-PI_CODING_AGENT_DIR="$(mktemp -d)" PI_OFFLINE=1 \
-  pi --no-extensions --no-skills --skill "$PWD/skills" \
-  --no-prompt-templates --no-themes --no-context-files --no-approve \
-  --list-models '__skill-load-check__'
-```
+- Pi `1.0.0`, running under Node.js `24.16.0`, discovers all 52 skills with zero skill diagnostics and one package extension with zero load errors. All 27 aliases forward and expand correctly and refuse to interrupt an active turn. No model session or inference is used.
+- Decision-log checks cover missing, empty, and existing files, header initialization, preservation of prior rows, one-row appends, UTC timestamps, control-character sanitization, formula-like cells, directory creation, and invalid arguments leaving the file untouched. The same check fails against the pre-sync writer on empty-file initialization.
+- Isolated negative fixtures reject an imported Cursor model rule, a missing new alias, an invocation-flag regression, and a broken reference. Guide and help heading links also resolve.
 
-On the tested Pi `0.85.1`, runtime creation loads resources before the model-list branch, but that branch reports only startup settings diagnostics. Its `No models available` output does not prove skills loaded cleanly. Use the SDK check above, not the unchanged bundled `create-skill` smoke recipe alone.
-
-## Verification limits
-
-The pre-sync loader found 46 skills and 21 principles with zero diagnostics and zero extensions. The post-sync loader found 48 skills and 23 principles under the same isolation, again with zero diagnostics and zero extensions. Negative fixtures confirmed that the static verifier rejects unquoted descriptions, invalid names, missing links, merge markers, and a restored Critique Mode section.
-
-The review follow-up verified that the TypeScript command from the guide expands through Pi's command handler, includes the skill body, and preserves its arguments. Bun examples confirmed that empty-result assertions reject both `undefined` and unexpected items, while an absence test can catch a wrong fallback even if it passes an `undefined` mutation. A sixth negative fixture confirmed that a bare template link is rejected after removing the validator's file-specific exception.
-
-A thermo-nuclear code-quality review of the full diff found no remaining maintainability blockers after these corrections. No changed file crosses 1,000 lines. The largest changed file is the 313-line TypeScript reference; the verifier is 104 lines and adds no runtime dependencies or helper modules.
-
-No provider inference, live PR operations, installs, or end-to-end Origin checks are part of this sync. Tests for the unchanged watcher runtime were outside scope. Its CLI was not invoked because the launcher can install dependencies. Existing Cursor-specific assumptions in retained runtime helpers and deferred workflows are not repaired by this prose sync.
+These checks prove resource loading, command dispatch, and log behavior. They do not prove future model compliance with skill prose. No live PR operations, provider inference, installs, Origin operations, or deferred orchestration runtimes are exercised by this sync.

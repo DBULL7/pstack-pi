@@ -4,6 +4,17 @@ An unattended run needs a checkable finish condition, isolated work, durable evi
 
 This workflow requires `pi-background-tasks`. Install it with `pi install npm:pi-background-tasks`, then restart Pi.
 
+## Trust the workflow before repeating it
+
+Before leaving a run unattended, check that it can:
+
+- Explain the goal and the check for done.
+- Reproduce the problem or establish a baseline on the real surface.
+- Make one bounded change and prove its effect.
+- Recover from a failed attempt and leave evidence you can inspect.
+
+Build a [verification skill](./06-verify-and-ship.md#create-a-project-verification-skill) first when the agent has no reliable way to drive the app. Repetition does not fix a workflow that cannot check its own work.
+
 ## State the predicate
 
 Use something the agent can prove true or false:
@@ -42,5 +53,7 @@ Keep external actions out of the unattended contract unless the user explicitly 
 ## Stop honestly
 
 Stop when the predicate passes. A plateau is not success. Change approach when evidence supports it, or report a genuine dead end with the failed hypotheses and artifacts. Never weaken the predicate to manufacture completion.
+
+When you need to interrupt the work, say "pause safely". The [Pause safely playbook](../../skills/poteto-mode/playbooks/pause-safely.md) finishes the current atomic step, preserves local work, and records what a new session needs to resume. It also applies to an explicit pause, going offline, or a restart; "going to bed, keep going" means continue within the agreed scope.
 
 Next: [Principles](./08-principles.md).

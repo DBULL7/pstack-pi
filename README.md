@@ -27,6 +27,8 @@ Run `/setup-pstack` to check the named-agent runtime, bundled profiles, and mode
 
 Read [the pstack guide](docs/guide/README.md) for a task-based tour from understanding code through verification and shipping.
 
+Ask `/poteto-help` for a workflow recommendation or a prompt to start with. It answers help questions without starting the proposed work.
+
 Use a focused command when you want one part of the workflow:
 
 - `/how` traces how a subsystem works
@@ -34,6 +36,8 @@ Use a focused command when you want one part of the workflow:
 - `/architect` settles types and boundaries before implementation
 - `/interrogate` reviews a result adversarially
 - `/tdd` reproduces a bug with a focused failing test
+- `/benchmark-checklist` checks the evidence behind a performance number
+- `/correct` prevents repeated agent mistakes with checks or structural changes
 
 Pi's canonical skill syntax also works:
 
@@ -45,7 +49,7 @@ Pi's canonical skill syntax also works:
 
 pstack-pi adds:
 
-- Engineering skills, playbooks, and 23 named principles
+- Engineering skills, playbooks, and 24 named principles
 - Slash-command aliases such as `/poteto-mode` and `/interrogate`
 - `poteto-agent` and report-only `comment-sicko` profiles for `pi-subagents`
 - Pi-specific session, delegation, Model Context Protocol (MCP), and safety guidance

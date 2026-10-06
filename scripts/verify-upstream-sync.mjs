@@ -6,7 +6,7 @@ import { fileURLToPath, pathToFileURL } from "node:url";
 import { execFileSync } from "node:child_process";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const files = globSync(["skills/**/*.md", "docs/**/*.md"], { cwd: root }).sort();
+const files = globSync(["README.md", "skills/**/*.md", "docs/**/*.md"], { cwd: root }).sort();
 const skills = files.filter((file) => basename(file) === "SKILL.md");
 const records = new Map(files.map((file) => [file, readFileSync(resolve(root, file), "utf8")]));
 const errors = [];
@@ -34,10 +34,11 @@ for (const error of errors) console.error(error);
 assert.equal(errors.length, 0, "tree validation errors");
 
 const deferred = ["autopilot-full", "autopilot-stack", "orchestrate", "shipping", "multi-phase-plan"];
-const explicitSkills = ["how", "why", "make-bot-ui", "typescript-best-practices", "unslop"];
+const newCommands = ["benchmark-checklist", "correct", "poteto-help"];
+const explicitSkills = ["how", "why", "make-bot-ui", "typescript-best-practices", "unslop", ...newCommands, "principle-explain-the-number"];
 const mode = records.get("skills/poteto-mode/SKILL.md");
-for (const name of ["principle-attack-the-premise", "principle-test-behavior-not-implementation"]) {
-  assert.ok(names.has(name), `new skill ${name}`);
+for (const name of names) {
+  if (!name.startsWith("principle-")) continue;
   assert.ok(mode.includes(`../${name}/SKILL.md`), `principle index links ${name}`);
 }
 for (const file of ["critic-prompt.md", "critique-rubric.md"]) assert.equal(existsSync(resolve(root, "skills/how/references", file)), false, `removed ${file}`);
@@ -62,12 +63,12 @@ for (const [file, pattern] of contracts) assert.match(records.get(file), pattern
 for (const [file, text] of records) {
   assert.doesNotMatch(text, /critic-prompt\.md|critique-rubric\.md|how.{0,80}critique|critique.{0,80}how/i, `${file}: removed how mode`);
   if (!file.startsWith("skills/") || deferred.some((name) => file === `skills/poteto-mode/playbooks/${name}.md`)) continue;
-  assert.doesNotMatch(text, /claude-fable-5|gpt-5\.6-sol|grok-4\.6-fast|~\/\.cursor\/rules\/pstack-models/, `${file}: Cursor routing`);
+  assert.doesNotMatch(text, /claude-(?:fable|opus)-\d|gpt-\d[\w.-]*-sol|grok-\d|pstack-models\.mdc/, `${file}: Cursor routing`);
 }
 for (const name of deferred) {
   assert.match(mode, new RegExp(`\\*\\*${name === "multi-phase-plan" ? "Multi-phase or multi-PR plan" : name[0].toUpperCase() + name.slice(1)}\\.\\*\\* Deferred`));
 }
-execFileSync("git", ["diff", "--exit-code", "77a1a7b", "--", "package.json", "agents", "extensions", "automations", "docs/pi-compat.md", "docs/guide/01-setup.md", "skills/setup-pstack", "skills/create-skill", "skills/poteto-mode/scripts", ...deferred.map((name) => `skills/poteto-mode/playbooks/${name}.md`)], { cwd: root, stdio: "pipe" });
+execFileSync("git", ["diff", "--exit-code", "fc99b79", "--", "package.json", "agents", "automations", "docs/pi-compat.md", "docs/guide/01-setup.md", "skills/setup-pstack", "skills/create-skill", "skills/poteto-mode/scripts", "skills/poteto-mode/playbooks/babysit.md", ...deferred.map((name) => `skills/poteto-mode/playbooks/${name}.md`)], { cwd: root, stdio: "pipe" });
 assert.equal(existsSync(resolve(root, ".cursor-plugin")), false, "no Cursor manifest");
 const principles = [...names].filter((name) => name.startsWith("principle-")).length;
 assert.ok(readFileSync(resolve(root, "README.md"), "utf8").includes(`${principles} named principles`), "README count");
@@ -82,7 +83,7 @@ if (process.argv.includes("--load")) {
   assert.ok(process.env.PI_CODING_AGENT_DIR, "set a fresh PI_CODING_AGENT_DIR");
   assert.deepEqual(readdirSync(process.env.PI_CODING_AGENT_DIR), [], "agent directory must be fresh and empty");
   const sdk = process.env.PI_SDK_PATH;
-  const { DefaultResourceLoader, SettingsManager } = await import(sdk ? pathToFileURL(resolve(sdk)).href : "@earendil-works/pi-coding-agent");
+  const { AgentSession, DefaultResourceLoader, SettingsManager } = await import(sdk ? pathToFileURL(resolve(sdk)).href : "@earendil-works/pi-coding-agent");
   const loader = new DefaultResourceLoader({
     cwd: root,
     agentDir: process.env.PI_CODING_AGENT_DIR,
@@ -93,12 +94,38 @@ if (process.argv.includes("--load")) {
     noThemes: true,
     noContextFiles: true,
     additionalSkillPaths: [resolve(root, "skills")],
+    additionalExtensionPaths: [resolve(root, "extensions/aliases.ts")],
   });
   await loader.reload();
   const loaded = loader.getSkills();
   assert.deepEqual(loaded.diagnostics, [], "Pi skill diagnostics");
   assert.deepEqual(loaded.skills.map((skill) => skill.name).sort(), [...names].sort(), "Pi discovers exactly the tree's skills");
-  assert.equal(loader.getExtensions().extensions.length, 0, "no extensions loaded");
+  const extensions = loader.getExtensions();
+  assert.deepEqual(extensions.errors, [], "Pi extension diagnostics");
+  assert.equal(extensions.extensions.length, 1, "only the package aliases extension loaded");
+  assert.equal(extensions.extensions[0].resolvedPath, resolve(root, "extensions/aliases.ts"), "package aliases extension");
   for (const name of explicitSkills) assert.equal(loaded.skills.find((skill) => skill.name === name).disableModelInvocation, true, `${name}: Pi invocation flag`);
-  console.log(`Pi loader: ${loaded.skills.length} skills, 0 diagnostics, 0 extensions, no inference`);
+  const commands = extensions.extensions[0].commands;
+  for (const name of newCommands) assert.ok(commands.has(name), `new command /${name}`);
+  const messages = [];
+  const notices = [];
+  extensions.runtime.sendUserMessage = (content, options) => messages.push({ content, options });
+  for (const [name, command] of commands) {
+    assert.ok(names.has(name), `/${name} points to an installed skill`);
+    for (const args of ["", "  inspect the export; preserve \"quoted input\"\nthen report  "]) {
+      const ctx = { isIdle: () => true, ui: { notify: (...args) => notices.push(args) } };
+      await command.handler(args, ctx);
+      const message = messages.pop();
+      assert.deepEqual(message, { content: `/skill:${name}${args.trim() ? ` ${args.trim()}` : ""}`, options: { expandPromptTemplates: true } }, `/${name} forwards arguments`);
+      const expanded = AgentSession.prototype._expandSkillCommand.call({ resourceLoader: loader }, message.content);
+      const body = records.get(`skills/${name}/SKILL.md`).replace(/^---\n[\s\S]*?\n---\n/, "").trim();
+      assert.ok(expanded.includes(body), `/${name} expands the installed skill body`);
+      assert.ok(expanded.endsWith(args.trim() || "</skill>"), `/${name} preserves the user's request after expansion`);
+      assert.equal(notices.length, 0, `/${name} runs when idle`);
+      await command.handler(args, { ...ctx, isIdle: () => false });
+      assert.equal(messages.length, 0, `/${name} does not interrupt an active turn`);
+      assert.equal(notices.pop()?.[1], "warning", `/${name} explains the busy state`);
+    }
+  }
+  console.log(`Pi loader: ${loaded.skills.length} skills, 0 errors, 1 package extension, ${commands.size} aliases verified, no inference`);
 }
