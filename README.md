@@ -21,6 +21,8 @@ Restart Pi in the project you want to work on. Start with a real, bounded task:
 
 `/poteto-mode` chooses the workflow from the goal and finish condition. You do not need to name the underlying skills.
 
+The receiving chat runs the playbook and passes its exact skill path to scoped delegates. It does not hand the whole run to `poteto-agent`.
+
 Run `/setup-pstack` to check the named-agent runtime, bundled profiles, and model routes.
 
 ## Learn the workflow
@@ -31,6 +33,8 @@ Ask `/poteto-help` for a workflow recommendation or a prompt to start with. It a
 
 Use a focused command when you want one part of the workflow:
 
+- `/in-your-own-words` restates your goal and problem before work
+- `/ketchup` summarizes changes in this chat with evidence-backed visuals
 - `/how` traces how a subsystem works
 - `/why` finds the evidence behind a design decision
 - `/architect` settles types and boundaries before implementation

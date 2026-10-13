@@ -1,0 +1,333 @@
+{
+  "piBaseline": "4ca790b03b2e939aa28ec1107d5897c3ad5dd2cc",
+  "upstreamBaseline": "df581122cde17e6e27686b5a448bde23e4ad4318",
+  "upstreamTarget": "dbf49813a39c1a5389c5e28cb8e4c1c2379e2454",
+  "upstreamVersion": "0.15.23",
+  "paths": [
+    {
+      "path": ".cursor-plugin/plugin.json",
+      "decision": "excluded",
+      "reason": "Cursor-only manifest; Pi package remains independently versioned at 0.1.0."
+    },
+    {
+      "path": "README.md",
+      "decision": "adapted",
+      "reason": "Pi README keeps install/menu semantics; document new commands and receiving-chat ownership without Cursor UI."
+    },
+    {
+      "path": "agents/comment-sicko.md",
+      "decision": "retained",
+      "reason": "Pi already uses comment-sicko; retain effective write/edit exclusions and report-only prompt."
+    },
+    {
+      "path": "agents/poteto-agent.md",
+      "decision": "adapted",
+      "reason": "Adapt delegate-only ownership and exact skill-path discovery to the active Pi package, not Cursor plugin scans."
+    },
+    {
+      "path": "plugin.json",
+      "decision": "excluded",
+      "reason": "Agent Plugins v1 is not Pi package discovery; retain package.json as the only package entry point."
+    },
+    {
+      "path": "skills/architect/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import reviewed prose changes while preserving Pi-specific paths and runtime contracts."
+    },
+    {
+      "path": "skills/arena/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import concise selection/grafting/output guidance; retain Pi agents and completion semantics."
+    },
+    {
+      "path": "skills/benchmark-checklist/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import concise measurement procedure; preserve macOS core count and unrelated processes."
+    },
+    {
+      "path": "skills/create-verification-skill/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import usable readiness, seed preconditions, and stand-in limits while retaining .pi skill paths."
+    },
+    {
+      "path": "skills/figure-it-out/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/how/SKILL.md",
+      "decision": "adapted",
+      "reason": "Adapt concise simple/complex sequence to Pi named agents with exactly one synthesis step."
+    },
+    {
+      "path": "skills/how/references/explorer-prompt.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/in-your-own-words/SKILL.md",
+      "decision": "imported",
+      "reason": "Import explicit-only goal/problem restatement."
+    },
+    {
+      "path": "skills/interrogate/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import concise intent/synthesis/verdict guidance; retain Pi reviewer routing with no invented agent/model fallback."
+    },
+    {
+      "path": "skills/interrogate/references/reviewer-prompt.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/interrogate/references/rubric.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/ketchup/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import read-only, under-250-word visual catch-up; use available local/Mermaid tools without assuming visualize or image inference."
+    },
+    {
+      "path": "skills/no-comments/SKILL.md",
+      "decision": "retained",
+      "reason": "Already delegates to Pi comment-sicko; keep report-only reviewer and parent-owned edits."
+    },
+    {
+      "path": "skills/poteto-help/SKILL.md",
+      "decision": "adapted",
+      "reason": "Add two focused skills and recall distinction while preserving Pi-only help/setup/deferred-workflow boundaries."
+    },
+    {
+      "path": "skills/poteto-help/references/recipes.md",
+      "decision": "adapted",
+      "reason": "Import reviewed prose changes while preserving Pi-specific paths and runtime contracts."
+    },
+    {
+      "path": "skills/poteto-mode/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import parent ownership and absolute delegate skill paths; retain explicit leaf/playbook paths, Pi routing, permission boundaries, and deferred workflows."
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/babysit.md",
+      "decision": "retained",
+      "reason": "Keep merge authorization boundary, completion notifications, and explicit reply evidence removed by upstream."
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/opening-a-pr.md",
+      "decision": "adapted",
+      "reason": "Import concise briefing and commit guidance; retain explicit publication authority, user drafts, optional helpers, and safe worktrees."
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/trace-forensics.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/poteto-mode/playbooks/worktree-cleanup.md",
+      "decision": "adapted",
+      "reason": "Document base selection while preserving Pi paths and loss-prevention gates."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/check-plan.mjs",
+      "decision": "adapted",
+      "reason": "Import CommonMark-style fence matching; retain the existing deferred plan/model contract rather than importing prior unported orchestration changes."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/check-plan.test.ts",
+      "decision": "adapted",
+      "reason": "Import positive/negative fence fixtures with inputs adapted to the retained deferred plan contract; assert that valid plans have no stderr."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/package.json",
+      "decision": "imported",
+      "reason": "Include new plan-fence fixture in the existing test command; no dependency or lockfile change."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/fakes.test-helper.ts",
+      "decision": "imported",
+      "reason": "Import paginated review-thread reader, cross-page Bugbot pass counts, caller/interface updates, and fixture coverage."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/github.test.ts",
+      "decision": "adapted",
+      "reason": "Import pagination fixtures and add red-first missing/empty/repeated-cursor regressions so incomplete reads cannot look merge-ready."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/github.ts",
+      "decision": "adapted",
+      "reason": "Import paginated review-thread reads and cross-page Bugbot counts; fail closed on advertised next pages without a cursor and repeated cursors."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/policy.test.ts",
+      "decision": "imported",
+      "reason": "Import paginated review-thread reader, cross-page Bugbot pass counts, caller/interface updates, and fixture coverage."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/policy.ts",
+      "decision": "imported",
+      "reason": "Import paginated review-thread reader, cross-page Bugbot pass counts, caller/interface updates, and fixture coverage."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/watch-pr/types.ts",
+      "decision": "imported",
+      "reason": "Import paginated review-thread reader, cross-page Bugbot pass counts, caller/interface updates, and fixture coverage."
+    },
+    {
+      "path": "skills/poteto-mode/scripts/worktree-audit.sh",
+      "decision": "adapted",
+      "reason": "Import explicit/default base checks and keep exact-cwd Pi session scanning."
+    },
+    {
+      "path": "skills/principle-build-the-lever/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-encode-lessons-in-structure/SKILL.md",
+      "decision": "retained",
+      "reason": "Retain standalone rule, mechanism ordering, and feedback loop; upstream leaves a fragment reliant on parent context."
+    },
+    {
+      "path": "skills/principle-exhaust-the-design-space/SKILL.md",
+      "decision": "retained",
+      "reason": "Retain standalone prototype rule and scope; upstream leaves only a corollary."
+    },
+    {
+      "path": "skills/principle-explain-the-number/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-fix-root-causes/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-guard-the-context-window/SKILL.md",
+      "decision": "retained",
+      "reason": "Retain payload isolation and inline-content rule for independently invoked leaf skills."
+    },
+    {
+      "path": "skills/principle-laziness-protocol/SKILL.md",
+      "decision": "retained",
+      "reason": "Retain standalone deletion, flattening, and signal-threading rules; upstream removes core operational guidance."
+    },
+    {
+      "path": "skills/principle-minimize-reader-load/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-model-the-domain/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-never-block-on-the-human/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-redesign-from-first-principles/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-subtract-before-you-add/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/principle-test-behavior-not-implementation/SKILL.md",
+      "decision": "retained",
+      "reason": "Retain regression-based assertions, valid absence/side-effect/property/type tests; upstream matcher-based deletion rule is unsound."
+    },
+    {
+      "path": "skills/principle-type-system-discipline/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/reflect/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import concise workflow; keep Pi session path, agent/MCP fallback, bundled create-skill, and approval before external filing."
+    },
+    {
+      "path": "skills/reflect/references/divergent-reviewer.md",
+      "decision": "adapted",
+      "reason": "Import concise evidence/routing guidance while retaining Pi resource paths and untrusted transcript boundaries."
+    },
+    {
+      "path": "skills/reflect/references/judgment-reviewer.md",
+      "decision": "adapted",
+      "reason": "Import concise evidence/routing guidance while retaining Pi resource paths and untrusted transcript boundaries."
+    },
+    {
+      "path": "skills/reflect/references/synthesizer.md",
+      "decision": "imported",
+      "reason": "Import concise evidence/routing guidance while retaining Pi resource paths and untrusted transcript boundaries."
+    },
+    {
+      "path": "skills/reflect/references/tooling-reviewer.md",
+      "decision": "adapted",
+      "reason": "Import concise evidence/routing guidance while retaining Pi resource paths and untrusted transcript boundaries."
+    },
+    {
+      "path": "skills/technical-writing/SKILL.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/unslop/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import concise prose and remove Must always apply; preserve quoted Pi frontmatter."
+    },
+    {
+      "path": "skills/why/SKILL.md",
+      "decision": "adapted",
+      "reason": "Import concise anchor/coverage/synthesis guidance; retain Pi named-agent routing and parent MCP fallback."
+    },
+    {
+      "path": "skills/why/references/epistemics.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/why/references/investigator-prompt.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/why/references/sources/code-archaeology.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/why/references/sources/datadog.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/why/references/sources/incident-postmortem.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/why/references/sources/sentry.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/why/references/sources/slack.md",
+      "decision": "imported",
+      "reason": "Import reviewed runtime-neutral prose reduction or debugging guidance."
+    },
+    {
+      "path": "skills/why/references/synthesizer-prompt.md",
+      "decision": "adapted",
+      "reason": "Import reviewed prose changes while preserving Pi-specific paths and runtime contracts."
+    }
+  ]
+}

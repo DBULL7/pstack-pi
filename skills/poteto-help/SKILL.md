@@ -53,6 +53,8 @@ The default for nontrivial engineering work is `/poteto-mode`. Name a focused sk
 
 | The user wants to | Skill |
 |---|---|
+| Restate the goal and problem before work | [`/in-your-own-words`](../in-your-own-words/SKILL.md) |
+| Catch up on changes in this chat with evidence-backed visuals | [`/ketchup`](../ketchup/SKILL.md) |
 | Do a task with design, implementation, and proof | [`/poteto-mode`](../poteto-mode/SKILL.md) |
 | Know how code works now | [`/how`](../how/SKILL.md) |
 | Know why code is shaped this way | [`/why`](../why/SKILL.md) |
@@ -90,7 +92,7 @@ Close calls:
 - `/arena` repeats a brief and synthesizes a design. `/swarm` splits coverage or runs declared race arms.
 - `/architect` proceeds into implementation by default. Add "with checkpoint" to review the design first.
 - `/interrogate` reviews the diff. `/blast-radius` follows breakage beyond it and proves the key safety claim.
-- `/recall` rebuilds context across this project's recent chats. Session pickup resumes one particular run or branch.
+- `/recall` rebuilds context across this project's recent chats. `/ketchup` covers this chat since the user's last message. Session pickup resumes one particular run or branch.
 
 ## Playbooks and principles
 
@@ -106,6 +108,8 @@ Principles are small skills that `/poteto-mode` reads and cites when applicable.
 
 | Symptom | Next step |
 |---|---|
+| Restate the goal and problem before work | [`/in-your-own-words`](../in-your-own-words/SKILL.md) |
+| Catch up on changes in this chat with evidence-backed visuals | [`/ketchup`](../ketchup/SKILL.md) |
 | The session lost the workflow | Invoke `/poteto-mode` again with the goal and current checkpoint. |
 | A question became the next step of the old task | Say "new task" and state whether it is read-only. |
 | The wrong model ran | Use `/setup-pstack` to inspect effective profiles and overrides. |
