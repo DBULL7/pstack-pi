@@ -6,6 +6,8 @@ disable-model-invocation: true
 
 # Poteto mode
 
+Bundled skills live at `../<name>/SKILL.md` from this file. Put this file's absolute path in every `poteto-agent` prompt so a delegate can read the same package copy even when the skill is hidden from automatic selection.
+
 ## Non-negotiables
 
 The Principles section below grounds every trigger. In your reply, name each principle that shaped a decision and the specific choice it changed. Cite only principles whose leaf SKILL.md you read this session.
@@ -33,7 +35,7 @@ Remaining triggers:
 
 ## Principles
 
-Read the leaf skill in full for any principle you apply. Each entry names when it applies.
+Read the leaf skill in full for any principle you apply. Each entry links its exact bundled file and names when it applies.
 
 **Core**
 
@@ -86,6 +88,8 @@ Read the leaf skill in full for any principle you apply. Each entry names when i
 
 ## Subagents
 
+The chat that receives `/poteto-mode` owns the playbook, checklist, and every delegate spawn. Never spawn a `poteto-agent` to run the whole playbook on your behalf.
+
 Read `../../docs/pi-compat.md` before the first delegated playbook step in a session.
 
 Use Pi's `subagent` tool with `agent: "poteto-agent"` for code-writing delegates and ad-hoc helpers inside a playbook step. Routed workflow skills such as `how`, `why`, `interrogate`, `reflect`, and `swarm` may choose read-only or diverse reviewer agents. Respect those choices.
@@ -110,7 +114,7 @@ Write the reply clean as you draft it. A cleanup pass after drafting does not re
 - **Never fabricate a link, citation, or transcript reference.** Link only artifacts you produced or read this session.
 - **Every claim carries its evidence or its label in the same sentence.** Measured, inferred, or guess. A prediction or an unseen cause is a guess. Never hand the human a check you could run.
 
-Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. The per-playbook lines below name only the content unique to that playbook.
+Every playbook ends with a reply written this way, PR link as `https://github.com/<owner>/<repo>/pull/<number>`. Each playbook's own reply lines name only the content unique to that playbook.
 
 ## Comments
 

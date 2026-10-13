@@ -32,10 +32,16 @@ for (const [file, text] of records) {
 console.log(`Tree: ${skills.length} skills, ${[...names].filter((name) => name?.startsWith("principle-")).length} principles, ${files.length} Markdown files`);
 for (const error of errors) console.error(error);
 assert.equal(errors.length, 0, "tree validation errors");
+assert.equal(skills.length, 54, "expected skill count");
 
 const deferred = ["autopilot-full", "autopilot-stack", "orchestrate", "shipping", "multi-phase-plan"];
-const newCommands = ["benchmark-checklist", "correct", "poteto-help"];
-const explicitSkills = ["how", "why", "make-bot-ui", "typescript-best-practices", "unslop", ...newCommands, "principle-explain-the-number"];
+const newCommands = ["in-your-own-words", "ketchup"];
+const aliases = [...readFileSync(resolve(root, "extensions/aliases.ts"), "utf8").matchAll(/^  "([a-z-]+)",$/gm)].map((match) => match[1]);
+assert.equal(aliases.length, 29, "exact alias count");
+assert.equal(new Set(aliases).size, aliases.length, "unique aliases");
+for (const name of newCommands) assert.ok(aliases.includes(name), `new command /${name}`);
+for (const name of aliases) assert.ok(names.has(name), `/${name} points to an installed skill`);
+const explicitSkills = ["how", "why", "make-bot-ui", "typescript-best-practices", "unslop", "benchmark-checklist", "correct", "poteto-help", ...newCommands, "principle-explain-the-number"];
 const mode = records.get("skills/poteto-mode/SKILL.md");
 for (const name of names) {
   if (!name.startsWith("principle-")) continue;
@@ -58,6 +64,14 @@ const contracts = [
   ["skills/poteto-mode/playbooks/opening-a-pr.md", /origin pr create --status open --base/],
   ["skills/typescript-best-practices/SKILL.md", /Schemas before guards/],
   ["skills/why/SKILL.md", /When the available agent cannot access MCP tools, keep MCP investigation in the parent/],
+  ["skills/poteto-mode/SKILL.md", /Never spawn a `poteto-agent` to run the whole playbook/],
+  ["skills/poteto-mode/SKILL.md", /Put this file's absolute path in every `poteto-agent` prompt/],
+  ["skills/ketchup/SKILL.md", /Keep this turn read-only/],
+  ["skills/ketchup/SKILL.md", /Keep the text under 250 words/],
+  ["skills/ketchup/SKILL.md", /Do not assume a `\/visualize` command/],
+  ["skills/create-verification-skill/SKILL.md", /Ready means usable/],
+  ["skills/create-verification-skill/SKILL.md", /Never weaken the journey/],
+  ["skills/principle-fix-root-causes/SKILL.md", /cheap, always-on signal/],
 ];
 for (const [file, pattern] of contracts) assert.match(records.get(file), pattern, file);
 for (const [file, text] of records) {
@@ -68,8 +82,42 @@ for (const [file, text] of records) {
 for (const name of deferred) {
   assert.match(mode, new RegExp(`\\*\\*${name === "multi-phase-plan" ? "Multi-phase or multi-PR plan" : name[0].toUpperCase() + name.slice(1)}\\.\\*\\* Deferred`));
 }
-execFileSync("git", ["diff", "--exit-code", "fc99b79", "--", "package.json", "agents", "automations", "skills/create-skill", "skills/poteto-mode/scripts", "skills/poteto-mode/playbooks/babysit.md", ...deferred.map((name) => `skills/poteto-mode/playbooks/${name}.md`)], { cwd: root, stdio: "pipe" });
+const coverage = JSON.parse(readFileSync(resolve(root, "docs/upstream-coverage.json"), "utf8"));
+assert.equal(coverage.piBaseline, "4ca790b03b2e939aa28ec1107d5897c3ad5dd2cc");
+assert.equal(coverage.upstreamTarget, "dbf49813a39c1a5389c5e28cb8e4c1c2379e2454");
+assert.equal(coverage.paths.length, 65, "complete reviewed subtree delta");
+assert.equal(new Set(coverage.paths.map((entry) => entry.path)).size, 65, "no duplicate decisions");
+for (const entry of coverage.paths) {
+  assert.ok(["imported", "adapted", "retained", "excluded"].includes(entry.decision), entry.path);
+  assert.ok(entry.reason.length > 0, `${entry.path}: reason`);
+  const file = resolve(root, entry.path);
+  if (entry.decision === "excluded") {
+    assert.equal(existsSync(file), false, `${entry.path}: excluded`);
+  } else if (entry.decision === "retained") {
+    assert.equal(readFileSync(file, "utf8"), execFileSync("git", ["show", `${coverage.piBaseline}:${entry.path}`], { cwd: root, encoding: "utf8" }), `${entry.path}: retained Pi baseline`);
+  } else {
+    assert.ok(existsSync(file), `${entry.path}: port exists`);
+  }
+}
+const changedScripts = coverage.paths.filter((entry) => entry.path.startsWith("skills/poteto-mode/scripts/") && ["imported", "adapted"].includes(entry.decision)).map((entry) => `:(exclude)${entry.path}`);
+execFileSync("git", ["diff", "--exit-code", coverage.piBaseline, "--", "package.json", "agents/comment-sicko.md", "automations", "skills/create-skill", "skills/setup-pstack", "docs/guide/01-setup.md", "skills/poteto-mode/scripts", "skills/poteto-mode/playbooks/babysit.md", ...deferred.map((name) => `skills/poteto-mode/playbooks/${name}.md`), ...changedScripts], { cwd: root, stdio: "pipe" });
+const agent = readFileSync(resolve(root, "agents/poteto-agent.md"), "utf8");
+assert.match(agent, /Use the absolute path supplied by the parent/);
+assert.match(agent, /Do not perform external actions unless the parent explicitly authorized them/);
+assert.doesNotMatch(agent, /pstack-models|\.cursor\/plugins|is_background:/);
 assert.equal(existsSync(resolve(root, ".cursor-plugin")), false, "no Cursor manifest");
+assert.equal(existsSync(resolve(root, "plugin.json")), false, "no Agent Plugins manifest");
+const upstreamIndex = process.argv.indexOf("--upstream");
+if (upstreamIndex !== -1) {
+  const upstream = resolve(process.argv[upstreamIndex + 1]);
+  const git = (...args) => execFileSync("git", ["-C", upstream, ...args], { encoding: "utf8" });
+  const paths = git("diff", "--name-only", coverage.upstreamBaseline, coverage.upstreamTarget, "--", "pstack").trim().split("\n").map((file) => file.slice("pstack/".length)).sort();
+  assert.deepEqual(coverage.paths.map((entry) => entry.path).sort(), paths, "coverage matches pinned upstream delta");
+  for (const entry of coverage.paths.filter((entry) => entry.decision === "imported")) {
+    assert.equal(readFileSync(resolve(root, entry.path), "utf8"), git("show", `${coverage.upstreamTarget}:pstack/${entry.path}`), `${entry.path}: exact upstream import`);
+  }
+  console.log(`Upstream coverage: all ${paths.length} paths accounted for; exact imports match the pinned source`);
+}
 const principles = [...names].filter((name) => name.startsWith("principle-")).length;
 assert.ok(readFileSync(resolve(root, "README.md"), "utf8").includes(`${principles} named principles`), "README count");
 const playbooks = globSync("skills/poteto-mode/playbooks/*.md", { cwd: root }).length;
@@ -107,6 +155,7 @@ if (process.argv.includes("--load")) {
   for (const name of explicitSkills) assert.equal(loaded.skills.find((skill) => skill.name === name).disableModelInvocation, true, `${name}: Pi invocation flag`);
   const commands = extensions.extensions[0].commands;
   for (const name of newCommands) assert.ok(commands.has(name), `new command /${name}`);
+  assert.equal(commands.size, 29, "exact alias count");
   const messages = [];
   const notices = [];
   extensions.runtime.sendUserMessage = (content, options) => messages.push({ content, options });
